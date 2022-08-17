@@ -57,7 +57,7 @@
         :loading="loading"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin"
+        @click="handleLogin"
       >登录</el-button>
       <div class="tips">
         <span style="margin-right: 20px">账号: 13800000002</span>
@@ -105,6 +105,7 @@ export default {
       redirect: undefined
     }
   },
+
   watch: {
     $route: {
       handler: function (route) {
@@ -114,6 +115,7 @@ export default {
     }
   },
   methods: {
+
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -124,22 +126,17 @@ export default {
         this.$refs.password.focus()
       })
     },
+
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(async(valid) => {
         if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+          console.log('发送请求')
+          const res = await this.$request({
+            url: '/sys/login',
+            method: 'post',
+            data: this.loginForm
+          })
+          console.log(res)
         }
       })
     }
