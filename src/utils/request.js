@@ -29,6 +29,7 @@ service.interceptors.response.use(response => {
   return response.data
 }, error => {
 // Do something with response error
+  // console.dir(error)
   Message.error(error.message)
   return Promise.reject(error)
 })
