@@ -1,14 +1,17 @@
 import { loginApi } from '@/api/user'
+import { setToken, getToken } from '@/utils/auth'
+
 const obj = {
   namespaced: true,
   state() {
     return {
-      token: ''
+      token: getToken() || ''
     }
   },
   mutations: {
     setToken(state, newToken) {
       state.token = newToken
+      setToken(newToken)
     }
   },
   actions: {

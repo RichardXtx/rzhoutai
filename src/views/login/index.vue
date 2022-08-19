@@ -132,6 +132,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.login(this.loginForm)
+          console.log(this.token)
         }
       })
     }
