@@ -131,8 +131,15 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.login(this.loginForm)
-          console.log(this.token)
+          this.loading = true
+          this.login(this.loginForm).then(res => {
+            this.$router.push('/')
+            this.$message.success('登录成功')
+          }).catch(err => {
+            console.log('err', err)
+          }).finally(_ => {
+            this.loading = false
+          })
         }
       })
     }

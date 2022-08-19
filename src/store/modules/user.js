@@ -16,10 +16,15 @@ const obj = {
   },
   actions: {
     login(context, data) {
-      loginApi(data).then(res => {
-        console.log(res)
-        const token = res.data.data
-        context.commit('setToken', token)
+      return new Promise((resolve, reject) => {
+        loginApi(data).then(res => {
+        //   console.log(res)
+          const token = res.data
+          context.commit('setToken', token)
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
       })
     }
   },
