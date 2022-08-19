@@ -68,7 +68,8 @@
 </template>
 
 <script>
-import { loginApi } from '@/api/user'
+// import { loginApi } from '@/api/user'
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -115,7 +116,7 @@ export default {
     }
   },
   methods: {
-
+    ...mapActions('user', ['login']),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -130,9 +131,7 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          loginApi(this.loginForm).then(res => {
-            console.log(res)
-          })
+          this.login(this.loginForm)
         }
       })
     }
