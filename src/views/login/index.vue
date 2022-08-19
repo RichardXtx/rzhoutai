@@ -68,7 +68,7 @@
 </template>
 
 <script>
-
+import { loginApi } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -128,15 +128,11 @@ export default {
     },
 
     handleLogin() {
-      this.$refs.loginForm.validate(async(valid) => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          console.log('发送请求')
-          const res = await this.$request({
-            url: '/sys/login',
-            method: 'post',
-            data: this.loginForm
+          loginApi(this.loginForm).then(res => {
+            console.log(res)
           })
-          console.log(res)
         }
       })
     }
