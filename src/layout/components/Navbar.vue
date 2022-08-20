@@ -8,7 +8,7 @@
 
     <div class="app-breadcrumb">
       江苏传智播客教育科技股份有限公司
-      <span class="breadBtn">体验版</span>
+      <span v-color="change" class="breadBtn">体验版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
@@ -55,8 +55,8 @@ export default {
   },
   data() {
     return {
-      defaultImg: defautlImg
-      // change: 'red'
+      defaultImg: defautlImg,
+      change: 'purple'
     }
   },
   computed: {

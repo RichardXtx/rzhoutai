@@ -17,6 +17,9 @@ import '@/permission' // permission control
 
 import request from '@/utils/request'
 
+// 引入自定义指令
+import { imgerror, color } from '@/directives'
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
@@ -25,13 +28,8 @@ Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 Vue.prototype.$request = request
 
-Vue.directive('imerror', {
-  inserted(el, binding) {
-    el.onerror = function() {
-      el.src = binding.value
-    }
-  }
-})
+Vue.directive('imerror', imgerror)
+Vue.directive('color', color)
 
 // 全局自定义指令 改变颜色
 /* Vue.directive('color', {
