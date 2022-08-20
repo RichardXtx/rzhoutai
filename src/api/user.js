@@ -12,3 +12,14 @@ export function loginApi(data) {
     data
   })
 }
+
+/**
+ * 用户信息
+ * @returns
+ */
+export function getUserInfoApi() {
+  return request({
+    url: '/sys/profile',
+    method: 'post'
+  })
+}

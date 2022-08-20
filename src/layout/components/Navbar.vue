@@ -41,6 +41,9 @@ import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
+// 引入获取用户信息接口
+import { getUserInfoApi } from '@/api/user'
+
 export default {
   components: {
     // Breadcrumb,
@@ -49,6 +52,9 @@ export default {
   computed: {
     ...mapGetters(['sidebar', 'avatar'])
   },
+  created() {
+    this.getUser()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -56,6 +62,11 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    getUser() { // 获取用户信息
+      getUserInfoApi().then(res => {
+        console.log(res)
+      })
     }
   }
 }

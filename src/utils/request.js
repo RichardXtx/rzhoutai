@@ -2,6 +2,8 @@ import axios from 'axios'
 
 import { Message } from 'element-ui'
 
+import store from '@/store'
+
 // 创建 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -12,6 +14,10 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(config => {
 // Do something before request is sent
+  const token = `Bearer ${store.getters.token}`
+  if (token) {
+    config.headers.Authorization = token
+  }
   return config
 }, error => {
 // Do something with request error
