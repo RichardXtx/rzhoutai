@@ -1,5 +1,5 @@
 import { loginApi, getUserInfoApi, userInfoApi } from '@/api/user'
-import { setToken, getToken } from '@/utils/auth'
+import { setToken, getToken, removeToken } from '@/utils/auth'
 
 const obj = {
   namespaced: true,
@@ -16,6 +16,13 @@ const obj = {
     },
     setUserInfo(state, newGetUserInfo) { // 获取用户信息
       state.userInfo = newGetUserInfo
+    },
+    clearToken(state) { // 清token
+      state.token = ''
+      removeToken()
+    },
+    clearUserInfo(state) {
+      state.userInfo = {}
     }
   },
   actions: {
@@ -61,6 +68,10 @@ const obj = {
       }
       commit('setUserInfo', baseData)
       return baseData
+    },
+    logout({ commit }) {
+      commit('clearToken')
+      commit('clearUserInfo')
     }
 
   },

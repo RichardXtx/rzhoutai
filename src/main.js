@@ -36,6 +36,7 @@ Vue.prototype.$request = request
 //   Vue.directive(key, directives[key])
 // }
 
+// 第二种方式：批量注册
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
