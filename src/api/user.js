@@ -23,3 +23,14 @@ export function getUserInfoApi() {
     method: 'post'
   })
 }
+
+/**
+ * 获取用户基本信息
+ * @param {*} id 用户ID
+ * @returns
+ */
+export function userInfoApi(id) {
+  return request({
+    url: `/sys/user/${id}`
+  })
+}

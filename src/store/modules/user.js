@@ -1,4 +1,4 @@
-import { loginApi, getUserInfoApi } from '@/api/user'
+import { loginApi, getUserInfoApi, userInfoApi } from '@/api/user'
 import { setToken, getToken } from '@/utils/auth'
 
 const obj = {
@@ -51,10 +51,15 @@ const obj = {
     //   })
     // }
     async getUserInfo({ commit }) {
-      const res = await getUserInfoApi()
-      const { data } = res
-      commit('setUserInfo', data)
-      return res
+      const { data } = await getUserInfoApi()
+      const { data: data2 } = await userInfoApi(data.userId)
+      console.log(data2)
+      const baseData = {
+        ...data,
+        ...data2
+      }
+      commit('setUserInfo', baseData)
+      return baseData
     }
 
   },
