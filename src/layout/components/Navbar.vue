@@ -37,12 +37,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 // 引入获取用户信息接口
-import { getUserInfoApi } from '@/api/user'
+// import { getUserInfoApi } from '@/api/user'
 
 export default {
   components: {
@@ -53,21 +53,19 @@ export default {
     ...mapGetters(['sidebar', 'avatar'])
   },
   created() {
-    this.getUser()
+    // this.getUser()
+    this.getUserInfo()
   },
   methods: {
+    ...mapActions('user', ['getUserInfo']),
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-    },
-    getUser() { // 获取用户信息
-      getUserInfoApi().then(res => {
-        console.log(res)
-      })
     }
+
   }
 }
 </script>
