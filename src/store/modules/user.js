@@ -53,7 +53,7 @@ const obj = {
     async getUserInfo({ commit }) {
       const { data } = await getUserInfoApi()
       const { data: data2 } = await userInfoApi(data.userId)
-      console.log(data2)
+      // console.log(data2)
       const baseData = {
         ...data,
         ...data2

@@ -25,6 +25,23 @@ Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 Vue.prototype.$request = request
 
+Vue.directive('imerror', {
+  inserted(el, binding) {
+    el.onerror = function() {
+      el.src = binding.value
+    }
+  }
+})
+
+// 全局自定义指令 改变颜色
+/* Vue.directive('color', {
+  inserted(el, binding) {
+    console.log(el)
+    console.log(binding)
+    el.style.color = binding.value
+  }
+}) */
+
 new Vue({
   el: '#app',
   router,

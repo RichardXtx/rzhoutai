@@ -15,7 +15,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
+          <img v-imerror="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
@@ -49,8 +49,14 @@ export default {
     // Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      defaultImg: 'https://ts1.cn.mm.bing.net/th?id=OIP-C.IIBPDNM1W1vJyooqDJS0EwHaEK&w=186&h=170&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2'
+      // change: 'red'
+    }
+  },
   computed: {
-    ...mapGetters(['sidebar', 'avatar', 'name'])
+    ...mapGetters(['sidebar', 'avatar', 'name', 'staffPhoto'])
   },
   created() {
 
