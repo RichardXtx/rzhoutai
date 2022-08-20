@@ -10,11 +10,11 @@ const obj = {
     }
   },
   mutations: {
-    setToken(state, newToken) {
+    setToken(state, newToken) { // 获取用户token
       state.token = newToken
       setToken(newToken)
     },
-    setUserInfo(state, newGetUserInfo) {
+    setUserInfo(state, newGetUserInfo) { // 获取用户信息
       state.userInfo = newGetUserInfo
     }
   },
@@ -35,6 +35,7 @@ const obj = {
       getUserInfoApi().then(res => {
         console.log(res)
         const { data } = res
+        // let data=res.data
         context.commit('setUserInfo', data)
       })
     }
