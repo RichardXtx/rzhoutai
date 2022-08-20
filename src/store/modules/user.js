@@ -19,31 +19,44 @@ const obj = {
     }
   },
   actions: {
-    login(context, data) {
-      return new Promise((resolve, reject) => {
-        loginApi(data).then(res => {
-        //   console.log(res)
-          const token = res.data
-          context.commit('setToken', token)
-          resolve(res)
-        }).catch(err => {
-          reject(err)
-        })
-      })
+    // login(context, data) {
+    //   return new Promise((resolve, reject) => {
+    //     loginApi(data).then(res => {
+    //     //   console.log(res)
+    //       const token = res.data
+    //       context.commit('setToken', token)
+    //       resolve(res)
+    //     }).catch(err => {
+    //       reject(err)
+    //     })
+    //   })
+    // },
+    async login({ commit }, data) {
+      const res = await loginApi(data)
+      const token = res.data
+      commit('setToken', token)
+      return res
     },
-    getUserInfo(context) {
-      return new Promise((resolve, reject) => {
-        getUserInfoApi().then(res => {
-          console.log(res)
-          const { data } = res
-          // let data=res.data
-          context.commit('setUserInfo', data)
-          resolve(res)
-        }).catch(err => {
-          reject(err)
-        })
-      })
+    // getUserInfo(context) {
+    //   return new Promise((resolve, reject) => {
+    //     getUserInfoApi().then(res => {
+    //       console.log(res)
+    //       const { data } = res
+    //       // let data=res.data
+    //       context.commit('setUserInfo', data)
+    //       resolve(res)
+    //     }).catch(err => {
+    //       reject(err)
+    //     })
+    //   })
+    // }
+    async getUserInfo({ commit }) {
+      const res = await getUserInfoApi()
+      const { data } = res
+      commit('setUserInfo', data)
+      return res
     }
+
   },
   getters: {}
 

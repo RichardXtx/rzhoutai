@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
@@ -53,11 +53,9 @@ export default {
     ...mapGetters(['sidebar', 'avatar', 'name'])
   },
   created() {
-    // this.getUser()
-    // this.getUserInfo()
+
   },
   methods: {
-    ...mapActions('user', ['getUserInfo']),
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
