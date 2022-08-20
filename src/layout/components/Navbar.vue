@@ -24,7 +24,7 @@
           <router-link to="/">
             <el-dropdown-item> 首页 </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://xxx.com">
+          <a target="_blank" href="https://gitee.com/pxy-ozzz/hrsass-149">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
