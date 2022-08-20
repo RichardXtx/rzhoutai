@@ -4,6 +4,8 @@ import { Message } from 'element-ui'
 
 import store from '@/store'
 
+import router from '@/router'
+
 // 创建 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -35,7 +37,12 @@ service.interceptors.response.use(response => {
   return response.data
 }, error => {
 // Do something with response error
-  // console.dir(error)
+  console.dir(error)
+  const { response } = error
+  if (response.status === 401 && response.data.code === 10002) {
+    store.dispatch('user/logout')
+    router.push('/login')
+  }
   Message.error(error.message)
   return Promise.reject(error)
 })
