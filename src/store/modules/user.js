@@ -32,11 +32,16 @@ const obj = {
       })
     },
     getUserInfo(context) {
-      getUserInfoApi().then(res => {
-        console.log(res)
-        const { data } = res
-        // let data=res.data
-        context.commit('setUserInfo', data)
+      return new Promise((resolve, reject) => {
+        getUserInfoApi().then(res => {
+          console.log(res)
+          const { data } = res
+          // let data=res.data
+          context.commit('setUserInfo', data)
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
       })
     }
   },

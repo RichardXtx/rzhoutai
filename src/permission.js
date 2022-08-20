@@ -17,7 +17,14 @@ router.beforeEach((to, from, next) => {
       next('/')
       NProgress.done()
     } else {
-      next()
+      const res = Object.keys(store.state.user.userInfo)
+      if (res.length <= 0) {
+        store.dispatch('user/getUserInfo').then(_ => {
+          next()
+        })
+      } else {
+        next()
+      }
     }
   } else { // 没有token
     // 看看是否在白名单中，如果在就放行，不在就跳转到登录页

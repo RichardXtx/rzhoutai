@@ -54,7 +54,7 @@ export default {
   },
   created() {
     // this.getUser()
-    this.getUserInfo()
+    // this.getUserInfo()
   },
   methods: {
     ...mapActions('user', ['getUserInfo']),
