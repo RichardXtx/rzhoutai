@@ -54,6 +54,7 @@ const obj = {
       const { data } = await getUserInfoApi()
       const { data: data2 } = await userInfoApi(data.userId)
       // console.log(data2)
+      // data2.staffPhoto = '51'
       const baseData = {
         ...data,
         ...data2

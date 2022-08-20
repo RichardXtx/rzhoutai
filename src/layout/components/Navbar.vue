@@ -41,6 +41,10 @@ import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
+// 第一种是使用网络图片
+// 第二种是使用项目中的图片
+import defautlImg from '@/assets/common/bigUserHeader.png'
+
 // 引入获取用户信息接口
 // import { getUserInfoApi } from '@/api/user'
 
@@ -51,7 +55,7 @@ export default {
   },
   data() {
     return {
-      defaultImg: 'https://ts1.cn.mm.bing.net/th?id=OIP-C.IIBPDNM1W1vJyooqDJS0EwHaEK&w=186&h=170&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2'
+      defaultImg: defautlImg
       // change: 'red'
     }
   },
