@@ -31,18 +31,14 @@ Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 Vue.prototype.$request = request
 
-for (const key in directives) {
-  Vue.directive(key, directives[key])
-}
+// 第一种方式：批量注册
+// for (const key in directives) {
+//   Vue.directive(key, directives[key])
+// }
 
-// 全局自定义指令 改变颜色
-/* Vue.directive('color', {
-  inserted(el, binding) {
-    console.log(el)
-    console.log(binding)
-    el.style.color = binding.value
-  }
-}) */
+Object.keys(directives).forEach(key => {
+  Vue.directive(key, directives[key])
+})
 
 new Vue({
   el: '#app',
