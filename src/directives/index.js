@@ -1,4 +1,4 @@
-export const imgerror = {
+export const imerror = {
   inserted(el, binding) {
     el.onerror = function() {
       el.src = binding.value
