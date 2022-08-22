@@ -1,5 +1,7 @@
 <template>
   <div v-if="!item.hidden">
+
+    <!-- 只有一个显示的导航,或者没有子导航的时候显示上边,反之用else逻辑 -->
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
@@ -8,6 +10,7 @@
       </app-link>
     </template>
 
+    <!-- 有多个子导航,执行此逻辑 -->
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
