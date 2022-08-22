@@ -43,6 +43,9 @@ service.interceptors.response.use(response => {
     store.dispatch('user/logout')
     router.push('/login')
   }
+  // if (response.status === 5000) {
+  //   router.push('/404')
+  // }
   Message.error(error.message)
   return Promise.reject(error)
 })
