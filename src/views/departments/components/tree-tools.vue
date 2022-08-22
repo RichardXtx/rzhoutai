@@ -18,9 +18,9 @@
             <span> 操作<i class="el-icon-arrow-down" /> </span>
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>删除部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isShow">删除部门</el-dropdown-item>
               <el-dropdown-item>添加子部门</el-dropdown-item>
-              <el-dropdown-item>修改部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isShow">修改部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -36,6 +36,10 @@ export default {
       require: true, // 必传
       type: Object, // 对象
       default: _ => {} // 默认返回空对象
+    },
+    isShow: {
+      type: Boolean,
+      isShow: false
     }
   }
 

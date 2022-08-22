@@ -3,7 +3,7 @@
     <div class="app-container">
       <el-card>
         <!-- 用了一个行列布局 -->
-        <tree-tools :node-data="company" />
+        <tree-tools :node-data="company" :is-show="true" />
 
         <!-- 树状图 -->
         <el-tree
@@ -19,6 +19,7 @@
       </el-card>
     </div>
   </div>
+
 </template>
 
 <script>
