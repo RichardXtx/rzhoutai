@@ -33,13 +33,7 @@ export default {
   data() {
     return {
       departs: [
-        {
-          name: '总裁办',
-          manager: '曹操',
-          children: [{ name: '董事会', manager: '曹丕' }]
-        },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }
+
       ],
       defaultProps: {
         label: 'name'
@@ -48,14 +42,33 @@ export default {
     }
   },
   created() {
-    this.getDepartment()
+    this.getDepartmentList()
   },
   methods: {
-    async getDepartment() {
+    async getDepartmentList() {
       const { data } = await getDepartmentApi()
       // console.log(res)
-      this.departs = data.depts // 赋值给原数组
       this.company.name = data.companyName // 公司名赋值
+
+      this.departs = this.transFromTreeList(data.depts, '') // 赋值给原数组
+    },
+    transFromTreeList(list, val) {
+      const arr = [] // 定义一个数组
+
+      // 先找到所有一级标签
+      list.forEach(item => {
+        if (item.pid === val) {
+          arr.push(item)
+        }
+      })
+      console.log(arr)
+
+      // 在通过子 pid 和 父 id 值相等进行筛选
+      arr.forEach(item => {
+        const children = list.filter(obj => obj.pid === item.id) || []
+        item.children = children
+      })
+      return arr
     }
   }
 
