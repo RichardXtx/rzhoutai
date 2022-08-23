@@ -47,5 +47,44 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.el-tree {
+  ::v-deep {
+    // 小三角的样式, 去掉默认的小三角的旋转效果
+    .el-tree-node__expand-icon.expanded {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    // 有子节点 且未展开 +
+    .el-icon-caret-right:before {
+      background: url("~@/assets/common/add-circle.png") no-repeat 0 0;
+      content: '';
+      display: block;
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      background-size: 16px;
+    }
+    // 有子节点 且已展开 -
+    .el-tree-node__expand-icon.expanded.el-icon-caret-right:before{
+      background: url("~@/assets/common/minus-circle.png") no-repeat 0 0;
+      content: '';
+      display: block;
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      background-size: 16px;
+    }
+    // 没有子节点
+    .el-tree-node__expand-icon.is-leaf::before  {
+      background: url("~@/assets/common/user-filling.png") no-repeat 0 0;
+      content: '';
+      display: block;
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      background-size: 16px;
+    }
+  }
+}
 </style>
