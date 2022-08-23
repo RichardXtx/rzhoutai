@@ -24,6 +24,9 @@
 
 <script>
 import treeTools from './components/tree-tools.vue'
+
+// 引入获取组织架构列表
+import { getDepartmentApi } from '@/api/department'
 export default {
   name: 'Departments',
   components: { treeTools },
@@ -43,7 +46,19 @@ export default {
       },
       company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' }
     }
+  },
+  created() {
+    this.getDepartment()
+  },
+  methods: {
+    async getDepartment() {
+      const { data } = await getDepartmentApi()
+      // console.log(res)
+      this.departs = data.depts // 赋值给原数组
+      this.company.name = data.companyName // 公司名赋值
+    }
   }
+
 }
 </script>
 
