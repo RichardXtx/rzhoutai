@@ -20,7 +20,7 @@
       </el-card>
 
       <!-- 弹框 -->
-      <add-depts :show-dialog="showDialog" @closeDialogFN="closeDialog" />
+      <add-depts :node-data="nodeData" :departs-list="departsList" :show-dialog="showDialog" @closeDialogFN="closeDialog" />
     </div>
   </div>
 
@@ -40,8 +40,9 @@ export default {
   data() {
     return {
       showDialog: false, // 弹框默认关闭
-      nodeData: {},
+      nodeData: {}, // 因为要知道给谁添加的子部门
 
+      departsList: [], // 平铺的数据
       departs: [
 
       ],
@@ -60,6 +61,8 @@ export default {
       // console.log(res)
       this.company.name = data.companyName // 公司名赋值
 
+      this.departsList = data.depts
+
       this.departs = transFromTreeList(data.depts, '') // 赋值给原数组
     },
     closeDialog() { // 关闭弹框
@@ -68,6 +71,7 @@ export default {
     addDialog(nodeData) { // 添加按钮
       this.showDialog = true
       this.nodeData = nodeData
+      // console.log(this.nodeData)
     }
     // transFromTreeList(list, val) {
     //   const arr = [] // 定义一个数组

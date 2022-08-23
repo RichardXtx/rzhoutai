@@ -1,20 +1,23 @@
 <template>
-  <el-dialog title="添加部门" :visible="showDialog" close-on-click-modal @close="closeDialog">
+  <el-dialog title="新增部门" :visible="showDialog" close-on-click-modal @close="closeDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
 
     <!-- 匿名插槽 -->
-    <el-form label-width="120px">
-      <el-form-item label="部门名称">
-        <el-input style="width:80%" placeholder="1-10个字符" />
+    <el-form label-width="120px" :model="form" :rules="rules">
+      <el-form-item label="部门名称" prop="name">
+        <el-input v-model="form.name" style="width:80%" placeholder="1-10个字符" />
       </el-form-item>
-      <el-form-item label="部门编码">
-        <el-input style="width:80%" placeholder="1-10个字符" />
+      <el-form-item label="部门编码" prop="code">
+        <el-input v-model="form.code" style="width:80%" placeholder="1-10个字符" />
       </el-form-item>
-      <el-form-item label="部门负责人">
-        <!-- <el-select style="width:80%" placeholder="请选择" /> -->
+      <el-form-item label="部门负责人" prop="manager">
+        <el-select v-model="form.manager" style="width:80%" placeholder="请选择">
+          <el-option label="区域一" value="shanghai" />
+          <el-option label="区域二" value="beijing" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="部门介绍">
-        <el-input style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
+      <el-form-item label="部门介绍" prop="introduce">
+        <el-input v-model="form.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
       </el-form-item>
     </el-form>
     <!-- el-dialog有专门放置底部操作栏的 插槽  具名插槽 -->
@@ -33,6 +36,49 @@ export default {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    departsList: {
+      type: Array,
+      default: _ => {}
+    },
+    nodeData: {
+      type: Object,
+      default: _ => {}
+    }
+  },
+  data() {
+    const nodeDataListFn = (rule, value, callback) => {
+      const children = this.departsList.filter(item => item.pid === this.nodeData.id)
+      console.log(children)
+      const isRepeat = children.some(item => item.name === value)
+      isRepeat ? callback(new Error('部门已存在')) : callback()
+    }
+
+    return {
+      form: { // form 表单初始值
+        name: '', // 部门名称
+        code: '', // 部门编码
+        manager: '', // 部门管理者
+        introduce: '' // 部门介绍
+      },
+      rules: { // 验证规则
+        name: [
+          { required: true, message: '请输入部门名称', trigger: ['blur', 'change'] },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
+          { validator: nodeDataListFn, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入部门编码', trigger: ['blur', 'change'] },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
+        ],
+        manager: [
+          { required: true, message: '请选择部门负责人', trigger: ['blur', 'change'] }
+        ],
+        introduce: [
+          { required: true, message: '请输入部门介绍', trigger: ['blur', 'change'] },
+          { min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: ['blur', 'change'] }
+        ]
+      }
     }
   },
 

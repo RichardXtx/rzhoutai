@@ -55,7 +55,7 @@ export default {
         }).catch(_ => {})
       }
       if (cmd === 'add') {
-        console.log('添加按钮')
+        // console.log('添加按钮')
         this.$emit('addShowDialog', this.nodeData)
       }
       if (cmd === 'edit') {
