@@ -115,3 +115,21 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+/**
+ * 转换数据为 树状结构
+ * @param {*} list  所有数据
+ * @param {*} searchVal 查询的数据
+ * @returns
+ */
+export const transFromTreeList = (list, searchVal) => {
+  const arr = []
+  list.forEach(item => {
+    if (item.pid === searchVal) { // 找到一级菜单
+      const children = transFromTreeList(list, item.id) || []
+      item.children = children
+      arr.push(item)
+    }
+  })
+  return arr
+}

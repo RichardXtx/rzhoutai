@@ -27,6 +27,8 @@ import treeTools from './components/tree-tools.vue'
 
 // 引入获取组织架构列表
 import { getDepartmentApi } from '@/api/department'
+
+import { transFromTreeList } from '@/utils/index'
 export default {
   name: 'Departments',
   components: { treeTools },
@@ -50,26 +52,39 @@ export default {
       // console.log(res)
       this.company.name = data.companyName // 公司名赋值
 
-      this.departs = this.transFromTreeList(data.depts, '') // 赋值给原数组
-    },
-    transFromTreeList(list, val) {
-      const arr = [] // 定义一个数组
-
-      // 先找到所有一级标签
-      list.forEach(item => {
-        if (item.pid === val) {
-          arr.push(item)
-        }
-      })
-      console.log(arr)
-
-      // 在通过子 pid 和 父 id 值相等进行筛选
-      arr.forEach(item => {
-        const children = list.filter(obj => obj.pid === item.id) || []
-        item.children = children
-      })
-      return arr
+      this.departs = transFromTreeList(data.depts, '') // 赋值给原数组
     }
+    // transFromTreeList(list, val) {
+    //   const arr = [] // 定义一个数组
+
+    //   // 先找到所有一级标签
+    //   list.forEach(item => {
+    //     if (item.pid === val) {
+    //       arr.push(item)
+    //     }
+    //   })
+    //   console.log(arr)
+
+    //   // 在通过子 pid 和 父 id 值相等进行筛选
+    //   arr.forEach(item => {
+    //     const children = list.filter(obj => obj.pid === item.id) || []
+    //     item.children = children
+    //   })
+    //   return arr
+    // }
+
+    // --------------  第二种方法 递归 ---------------
+    // transFromTreeList(list, searchVal) {
+    //   const arr = []
+    //   list.forEach(item => {
+    //     if (item.pid === searchVal) { // 找到一级菜单
+    //       const children = this.transFromTreeList(list, item.id) || []
+    //       item.children = children
+    //       arr.push(item)
+    //     }
+    //   })
+    //   return arr
+    // }
   }
 
 }
