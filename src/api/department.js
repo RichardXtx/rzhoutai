@@ -9,3 +9,15 @@ export function getDepartmentApi() {
     url: '/company/department'
   })
 }
+
+/**
+ * 删除部门
+ * @param {*} id 删除部门所需 id
+ * @returns
+ */
+export const delDepartmentApi = (id) => {
+  return request({
+    url: `/company/department/${id}`,
+    method: 'delete'
+  })
+}

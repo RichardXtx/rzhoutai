@@ -9,11 +9,12 @@
         <el-tree
           :data="departs"
           :props="defaultProps"
+          default-expand-all
         >
           <!-- 作用域插槽 -->
           <template #default="{ data }">
             <!-- 当 el-row 放到其他标签中, 宽度是通过内容来撑开的 -->
-            <tree-tools :node-data="data" />
+            <tree-tools :node-data="data" @del_department="getDepartmentList" />
           </template>
         </el-tree>
       </el-card>
@@ -85,6 +86,7 @@ export default {
     //   })
     //   return arr
     // }
+
   }
 
 }
