@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增部门" :visible="showDialog" close-on-click-modal @close="closeDialog">
+  <el-dialog title="新增部门" :visible="showDialog" close-on-click-modal @open="openDialog" @close="closeDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
 
     <!-- 匿名插槽 -->
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { getUserEasyListApi } from '@/api/employees'
 export default {
 
   name: 'AddDepts',
@@ -91,6 +92,13 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('closeDialogFN')
+    },
+    async getUserEasyList() {
+      const res = await getUserEasyListApi()
+      console.log(res)
+    },
+    openDialog() {
+      this.getUserEasyList()
     }
 
   }
