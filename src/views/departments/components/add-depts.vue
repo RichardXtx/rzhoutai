@@ -47,11 +47,15 @@ export default {
     }
   },
   data() {
-    const nodeDataListFn = (rule, value, callback) => {
+    const nodeDataListFn = (rule, value, callback) => { // 名字重复校验
       const children = this.departsList.filter(item => item.pid === this.nodeData.id)
       console.log(children)
       const isRepeat = children.some(item => item.name === value)
       isRepeat ? callback(new Error('部门已存在')) : callback()
+    }
+    const codeListFn = (rule, value, callback) => { // 编码重复校验
+      const isRepeat = this.departsList.some(item => item.code === value)
+      isRepeat ? callback(new Error('部门编码不能重复')) : callback()
     }
 
     return {
@@ -69,7 +73,9 @@ export default {
         ],
         code: [
           { required: true, message: '请输入部门编码', trigger: ['blur', 'change'] },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] }
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: ['blur', 'change'] },
+          { validator: codeListFn, trigger: 'blur' }
+
         ],
         manager: [
           { required: true, message: '请选择部门负责人', trigger: ['blur', 'change'] }
