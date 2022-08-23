@@ -21,3 +21,11 @@ export const delDepartmentApi = (id) => {
     method: 'delete'
   })
 }
+
+export const getDepartmentEasyListApi = (data) => {
+  return request({
+    url: '/company/department',
+    method: 'post',
+    data
+  })
+}

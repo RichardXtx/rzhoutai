@@ -3,7 +3,7 @@
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
 
     <!-- 匿名插槽 -->
-    <el-form label-width="120px" :model="form" :rules="rules">
+    <el-form ref="form" label-width="120px" :model="form" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="form.name" style="width:80%" placeholder="1-10个字符" />
       </el-form-item>
@@ -22,7 +22,7 @@
     </el-form>
     <!-- el-dialog有专门放置底部操作栏的 插槽  具名插槽 -->
     <div slot="footer">
-      <el-button type="primary" size="small">确定</el-button>
+      <el-button type="primary" size="small" @click="submit">确定</el-button>
       <el-button size="small">取消</el-button>
     </div>
   </el-dialog>
@@ -30,6 +30,8 @@
 
 <script>
 import { getUserEasyListApi } from '@/api/employees'
+
+import { getDepartmentEasyListApi } from '@/api/department'
 export default {
 
   name: 'AddDepts',
@@ -93,6 +95,7 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('closeDialogFN')
+      this.$refs.form.resetFields()
     },
     async getUserEasyList() {
       const { data } = await getUserEasyListApi()
@@ -101,6 +104,19 @@ export default {
     },
     openDialog() {
       this.getUserEasyList()
+    },
+    submit() {
+      this.$refs.form.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        await getDepartmentEasyListApi({
+          ...this.form, pid: this.nodeData.id
+        })
+        // console.log(res)
+        this.$message.success('添加成功!')
+        this.closeDialog()
+        this.$emit('add-submit')
+      })
     }
 
   }

@@ -20,7 +20,7 @@
       </el-card>
 
       <!-- 弹框 -->
-      <add-depts :node-data="nodeData" :departs-list="departsList" :show-dialog="showDialog" @closeDialogFN="closeDialog" />
+      <add-depts :node-data="nodeData" :departs-list="departsList" :show-dialog="showDialog" @add-submit="getDepartmentList" @closeDialogFN="closeDialog" />
     </div>
   </div>
 
