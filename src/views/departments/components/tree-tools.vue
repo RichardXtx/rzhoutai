@@ -56,6 +56,7 @@ export default {
       }
       if (cmd === 'add') {
         console.log('添加按钮')
+        this.$emit('addShowDialog', this.nodeData)
       }
       if (cmd === 'edit') {
         console.log('修改按钮')
