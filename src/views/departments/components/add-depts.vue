@@ -12,8 +12,8 @@
       </el-form-item>
       <el-form-item label="部门负责人" prop="manager">
         <el-select v-model="form.manager" style="width:80%" placeholder="请选择">
-          <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
+          <el-option v-for="item in employeesList" :key="item.id" :value="item.username" :label="item.username" />
+
         </el-select>
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
@@ -85,7 +85,8 @@ export default {
           { required: true, message: '请输入部门介绍', trigger: ['blur', 'change'] },
           { min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: ['blur', 'change'] }
         ]
-      }
+      },
+      employeesList: []
     }
   },
 
@@ -94,8 +95,9 @@ export default {
       this.$emit('closeDialogFN')
     },
     async getUserEasyList() {
-      const res = await getUserEasyListApi()
-      console.log(res)
+      const { data } = await getUserEasyListApi()
+      // console.log(data)
+      this.employeesList = data
     },
     openDialog() {
       this.getUserEasyList()
