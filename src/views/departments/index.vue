@@ -3,7 +3,7 @@
     <div class="app-container">
       <el-card>
         <!-- 用了一个行列布局 -->
-        <tree-tools :node-data="company" :is-show="true" />
+        <tree-tools :node-data="company" :is-show="true" @addShowDialog="addDialog" />
 
         <!-- 树状图 -->
         <el-tree
@@ -49,7 +49,7 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' }
+      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人', id: '' }
     }
   },
   created() {
