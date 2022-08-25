@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
     <div class="app-container">
-      <el-card>
+      <el-card v-loading="loading">
         <el-tabs>
           <!-- 左侧 -->
           <el-tab-pane label="角色管理">
@@ -13,7 +13,7 @@
             >新增角色</el-button>
             <!-- 表格 -->
             <el-table :data="roleList">
-              <el-table-column label="序号" width="100" type="index" />
+              <el-table-column label="序号" width="100" type="index" :index="indexMethod" />
               <el-table-column label="角色名称" width="240" prop="name" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
@@ -47,29 +47,33 @@
 </template>
 <script>
 import { getAllroleListApi } from '@/api/role'
+
 export default {
   data() {
     return {
       page: 1,
       pagesize: 3,
       roleList: [], // 要渲染的表单
-      total: 0
+      total: 0, // 总页数
+
+      loading: false
     }
   },
   created() {
     this.getAllroleList()
   },
   methods: {
-    async getAllroleList() {
-      // 获取角色列表
+    async getAllroleList() { // 获取角色列表
+      this.loading = true
       const {
         data: { rows, total }
       } = await getAllroleListApi(this.page, this.pagesize)
       this.roleList = rows
       // console.log(this.roleList)
       this.total = total
+      this.loading = false
     },
-    handleSizeChange(val) {
+    handleSizeChange(val) { // 点击页容量
       // console.log(`每页 ${val} 条`)
       this.pagesize = val
 
@@ -79,10 +83,17 @@ export default {
 
       this.getAllroleList()
     },
-    handleCurrentChange(val) {
+    handleCurrentChange(val) { // 点击page
       // console.log(`当前页: ${val}`)
       this.page = val
       this.getAllroleList()
+    },
+    indexMethod(index) {
+      // 前几页的数据加上 index +1
+      // 前几页的数据 (前几页的数据 * pagesize)
+
+      // 因为 index 为 0
+      return (this.page - 1) * this.pagesize + index + 1
     }
   }
 }
