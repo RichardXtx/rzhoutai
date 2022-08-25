@@ -15,3 +15,15 @@ export const getAllroleListApi = (page, pagesize) => {
     }
   })
 }
+
+/**
+ * 删除角色
+ * @param {*} id 删除角色所需id
+ * @returns
+ */
+export const delRoleListApi = id => {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'delete'
+  })
+}
