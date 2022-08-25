@@ -22,10 +22,26 @@ export const delDepartmentApi = (id) => {
   })
 }
 
+/**
+ * 获取下拉列表数据
+ * @param {*} data
+ * @returns
+ */
 export const getDepartmentEasyListApi = (data) => {
   return request({
     url: '/company/department',
     method: 'post',
     data
+  })
+}
+
+/**
+ * 修改部门详情
+ * @param {*} id
+ * @returns
+ */
+export const editDepartmentApi = id => {
+  return request({
+    url: `/company/department/${id}`
   })
 }

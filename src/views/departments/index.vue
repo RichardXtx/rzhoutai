@@ -20,7 +20,7 @@
       </el-card>
 
       <!-- 弹框 -->
-      <add-depts :node-data="nodeData" :departs-list="departsList" :show-dialog.sync="showDialog" @add-submit="getDepartmentList" />
+      <add-depts ref="addDepts" :node-data="nodeData" :departs-list="departsList" :show-dialog.sync="showDialog" @add-submit="getDepartmentList" />
       <!--  @closeDialogFN="closeDialog" -->
     </div>
   </div>
@@ -77,6 +77,11 @@ export default {
     editDialog(nodeData) { // 修改按钮
       this.showDialog = true
       this.nodeData = nodeData
+
+      // dom 更新是异步的
+      this.$nextTick(_ => {
+        this.$refs.addDepts.editDepartment()
+      })
     }
     // transFromTreeList(list, val) {
     //   const arr = [] // 定义一个数组

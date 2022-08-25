@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增部门" :visible="showDialog" close-on-click-modal @open="openDialog" @close="closeDialog">
+  <el-dialog :title="showTitle" :visible="showDialog" close-on-click-modal @open="openDialog" @close="closeDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
 
     <!-- 匿名插槽 -->
@@ -31,7 +31,7 @@
 <script>
 import { getUserEasyListApi } from '@/api/employees'
 
-import { getDepartmentEasyListApi } from '@/api/department'
+import { getDepartmentEasyListApi, editDepartmentApi } from '@/api/department'
 export default {
 
   name: 'AddDepts',
@@ -91,11 +91,24 @@ export default {
       employeesList: []
     }
   },
+  computed: {
+
+    showTitle() { // 判断 form 是否有 id ,有id 就为编辑,没有就是添加
+      return this.form.id ? '编辑' : '添加子部门'
+    }
+  },
 
   methods: {
     closeDialog() {
       this.$emit('update:showDialog', false)
       this.$refs.form.resetFields()
+      this.form = {
+        name: '', // 部门名称
+        code: '', // 部门编码
+        manager: '', // 部门管理者
+        introduce: '' // 部门介绍
+
+      }
     },
     async getUserEasyList() {
       const { data } = await getUserEasyListApi()
@@ -117,6 +130,10 @@ export default {
         this.closeDialog()
         this.$emit('add-submit')
       })
+    },
+    async editDepartment() {
+      const { data } = await editDepartmentApi(this.nodeData.id)
+      this.form = data
     }
 
   }
