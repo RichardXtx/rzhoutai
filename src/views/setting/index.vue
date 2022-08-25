@@ -10,6 +10,7 @@
               icon="el-icon-plus"
               size="small"
               type="primary"
+              @click="addRole"
             >新增角色</el-button>
             <!-- 表格 -->
             <el-table :data="roleList">
@@ -44,11 +45,28 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+
+      <!-- 弹框 -->
+      <el-dialog title="添加数据" :visible="showDialog" @close="closeDialog">
+
+        <el-form ref="roleForm" :model="form" :rules="rules" label-width="100px">
+          <el-form-item label="角色名称" prop="name">
+            <el-input v-model="form.name" placeholder="请输入角色名称" />
+          </el-form-item>
+          <el-form-item label="角色描述">
+            <el-input v-model="form.description" placeholder="请输入角色描述" />
+          </el-form-item>
+        </el-form>
+
+        <template #footer>
+          <el-button @click="closeDialog">取消</el-button>
+          <el-button type="primary" @click="submit">确认</el-button>
+        </template></el-dialog>
     </div>
   </div>
 </template>
 <script>
-import { getAllroleListApi, delRoleListApi } from '@/api/role'
+import { getAllroleListApi, delRoleListApi, addRoleListApi } from '@/api/role'
 
 export default {
   data() {
@@ -58,7 +76,18 @@ export default {
       roleList: [], // 要渲染的表单
       total: 0, // 总页数
 
-      loading: false
+      loading: false, // 加载默认值
+
+      showDialog: false, // 是否展示表单
+      form: {
+        name: '',
+        description: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入角色名称', trigger: ['blur', 'change'] }
+        ]
+      }
     }
   },
   created() {
@@ -97,11 +126,12 @@ export default {
       // 因为 index 为 0
       return (this.page - 1) * this.pagesize + index + 1
     },
-    delRole(id) {
+    delRole(id) { // 删除
       // console.log(id)
       this.$confirm('你确定要删除吗?', '提示').then(async _ => {
         await delRoleListApi(id)
 
+        // 只有当页码大于1 和 当前的 页码中所存在的数据长度为1 的时候触发事件
         if (this.page > 1 && this.roleList.length === 1) {
           this.page--
         }
@@ -109,6 +139,27 @@ export default {
 
         this.getAllroleList()
       }).catch(_ => {})
+    },
+    closeDialog() { // 关闭表单
+      this.showDialog = false
+      this.$refs.roleForm.resetFields() // 重置双向绑定的数据
+      this.form = {
+        name: '',
+        description: ''
+      }
+    },
+    addRole() { // 点击添加按钮 打开表单
+      this.showDialog = true
+    },
+    submit() { // 确定事件
+      this.$refs.roleForm.validate(async val => {
+        if (!val) return
+        const res = await addRoleListApi(this.form)
+        console.log(res)
+        this.$message.success('添加成功!')
+        this.getAllroleList()
+        this.closeDialog()
+      })
     }
   }
 }
