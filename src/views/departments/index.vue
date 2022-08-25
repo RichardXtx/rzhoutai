@@ -1,5 +1,11 @@
 <template>
-  <div class="departments-container">
+  <div
+    v-loading="loading"
+    class="departments-container"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <div class="app-container">
       <el-card>
         <!-- 用了一个行列布局 -->
@@ -43,7 +49,8 @@ export default {
       showDialog: false, // 弹框默认关闭
       nodeData: {}, // 因为要知道给谁添加的子部门
 
-      departsList: [], // 平铺的数据
+      departsList: [], // 平铺的数据,
+      loading: false,
       departs: [
 
       ],
@@ -58,6 +65,7 @@ export default {
   },
   methods: {
     async getDepartmentList() {
+      this.loading = true
       const { data } = await getDepartmentApi()
       // console.log(res)
       this.company.name = data.companyName // 公司名赋值
@@ -65,6 +73,7 @@ export default {
       this.departsList = data.depts // 公司的平铺数据赋值
 
       this.departs = transFromTreeList(data.depts, '') // 赋值给原数组
+      this.loading = false
     },
     closeDialog() { // 关闭弹框
       this.showDialog = false

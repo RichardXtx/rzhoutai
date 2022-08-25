@@ -50,9 +50,20 @@ export default {
     }
   },
   data() {
-    const nodeDataListFn = (rule, value, callback) => { // 名字重复校验
-      const children = this.departsList.filter(item => item.pid === this.nodeData.id)
+    const nodeDataListFn = (rule, value, callback) => { // 部门名字重复校验
+      let children = []
+      if (this.form.id) { // 判断是否为编辑事件
+        if (this.nodeData.name === value) { // 判断名字是否和子组件名相同,相同放行
+          callback()
+          return
+        } else { // 如果和同级的名字相同那就不放行
+          children = this.departsList.filter(item => item.pid === this.nodeData.pid)
+        }
+      } else {
+        children = this.departsList.filter(item => item.pid === this.nodeData.id)
       // console.log(children)
+      }
+
       const isRepeat = children.some(item => item.name === value)
       isRepeat ? callback(new Error('部门已存在')) : callback()
     }
