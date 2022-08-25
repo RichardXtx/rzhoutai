@@ -57,6 +57,14 @@ export default {
       isRepeat ? callback(new Error('部门已存在')) : callback()
     }
     const codeListFn = (rule, value, callback) => { // 编码重复校验
+      if (this.form.id) { // 如果是编辑状态下,修改的code和输入的value属性一样
+      // 那就通过
+        if (this.nodeData.code === value) {
+          callback()
+          return
+        }
+      }
+
       const isRepeat = this.departsList.some(item => item.code === value)
       isRepeat ? callback(new Error('部门编码不能重复')) : callback()
     }
@@ -127,8 +135,9 @@ export default {
         // 就执行 编辑的接口
         // 如果没有, 就执行 添加数据的接口
         if (this.form.id) {
-          const res = await editDepartmentApi(this.form)
-          console.log(res)
+          await editDepartmentApi(this.form)
+          // console.log(res)
+          this.$message.success('修改成功')
         } else {
           await getDepartmentEasyListApi({
             ...this.form, pid: this.nodeData.id
