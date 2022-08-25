@@ -22,6 +22,19 @@
                 <el-button size="small" type="danger">删除</el-button>
               </el-table-column>
             </el-table>
+
+            <!-- 分页 -->
+            <div class="fy">
+              <el-pagination
+                :current-page="page"
+                :page-sizes="[1, 2, 3, 4, 5]"
+                :page-size="pagesize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
           </el-tab-pane>
 
           <el-tab-pane label="公司信息">
@@ -38,27 +51,46 @@ export default {
   data() {
     return {
       page: 1,
-      pagesize: 10,
+      pagesize: 3,
       roleList: [], // 要渲染的表单
       total: 0
-
     }
   },
   created() {
     this.getAllroleList()
   },
   methods: {
-    async  getAllroleList() {
-      const { data: { rows, total }} = await getAllroleListApi(this.page, this.pagesize)
+    async getAllroleList() {
+      // 获取角色列表
+      const {
+        data: { rows, total }
+      } = await getAllroleListApi(this.page, this.pagesize)
       this.roleList = rows
       // console.log(this.roleList)
       this.total = total
+    },
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`)
+      this.pagesize = val
+      this.getAllroleList()
+
+      // 因为点击每页 页容量 的时候, 第一次请求的时候页码并没有改变重置为一
+      // 会造成 白屏的情况
+      this.page = 1
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`)
+      this.page = val
+      this.getAllroleList()
     }
   }
-
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.fy {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
 </style>
