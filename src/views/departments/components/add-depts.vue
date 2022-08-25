@@ -23,7 +23,7 @@
     <!-- el-dialog有专门放置底部操作栏的 插槽  具名插槽 -->
     <div slot="footer">
       <el-button type="primary" size="small" @click="submit">确定</el-button>
-      <el-button size="small">取消</el-button>
+      <el-button size="small" @click="closeDialog">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -52,7 +52,7 @@ export default {
   data() {
     const nodeDataListFn = (rule, value, callback) => { // 名字重复校验
       const children = this.departsList.filter(item => item.pid === this.nodeData.id)
-      console.log(children)
+      // console.log(children)
       const isRepeat = children.some(item => item.name === value)
       isRepeat ? callback(new Error('部门已存在')) : callback()
     }
@@ -94,7 +94,7 @@ export default {
 
   methods: {
     closeDialog() {
-      this.$emit('closeDialogFN')
+      this.$emit('update:showDialog', false)
       this.$refs.form.resetFields()
     },
     async getUserEasyList() {
