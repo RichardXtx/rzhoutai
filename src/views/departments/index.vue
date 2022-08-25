@@ -78,7 +78,7 @@ export default {
       this.showDialog = true
       this.nodeData = nodeData
 
-      // dom 更新是异步的
+      // dom 更新是异步的,需要等待更新完成之后,在调用数据的回显
       this.$nextTick(_ => {
         this.$refs.addDepts.editDepartment()
       })

@@ -36,12 +36,26 @@ export const getDepartmentEasyListApi = (data) => {
 }
 
 /**
- * 修改部门详情
+ * 获取部门详情
  * @param {*} id
  * @returns
  */
-export const editDepartmentApi = id => {
+export const geteditDepartmentApi = id => {
   return request({
     url: `/company/department/${id}`
+  })
+}
+
+/**
+ * 编辑部门
+ * @param {*} form
+ * @returns
+ */
+export const editDepartmentApi = form => {
+  return request({
+    url: `/company/department/${form.id}`,
+    method: 'put',
+    data: form
+
   })
 }

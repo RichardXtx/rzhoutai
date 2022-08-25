@@ -31,7 +31,7 @@
 <script>
 import { getUserEasyListApi } from '@/api/employees'
 
-import { getDepartmentEasyListApi, editDepartmentApi } from '@/api/department'
+import { getDepartmentEasyListApi, geteditDepartmentApi, editDepartmentApi } from '@/api/department'
 export default {
 
   name: 'AddDepts',
@@ -122,17 +122,26 @@ export default {
       this.$refs.form.validate(async valid => {
         // console.log(valid)
         if (!valid) return
-        await getDepartmentEasyListApi({
-          ...this.form, pid: this.nodeData.id
-        })
-        // console.log(res)
-        this.$message.success('添加成功!')
+
+        // 如果 form 表单中有数据
+        // 就执行 编辑的接口
+        // 如果没有, 就执行 添加数据的接口
+        if (this.form.id) {
+          const res = await editDepartmentApi(this.form)
+          console.log(res)
+        } else {
+          await getDepartmentEasyListApi({
+            ...this.form, pid: this.nodeData.id
+          })
+          // console.log(res)
+          this.$message.success('添加成功!')
+        }
         this.closeDialog()
         this.$emit('add-submit')
       })
     },
-    async editDepartment() {
-      const { data } = await editDepartmentApi(this.nodeData.id)
+    async editDepartment() { // 获取部门详情
+      const { data } = await geteditDepartmentApi(this.nodeData.id)
       this.form = data
     }
 
