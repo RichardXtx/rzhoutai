@@ -59,7 +59,8 @@ export default {
         this.$emit('addShowDialog', this.nodeData)
       }
       if (cmd === 'edit') {
-        console.log('修改按钮')
+        // console.log('修改按钮')
+        this.$emit('editShowDialog', this.nodeData)
       }
     }
   }

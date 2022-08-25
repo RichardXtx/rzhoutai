@@ -14,7 +14,7 @@
           <!-- 作用域插槽 -->
           <template #default="{ data }">
             <!-- 当 el-row 放到其他标签中, 宽度是通过内容来撑开的 -->
-            <tree-tools :node-data="data" @del_department="getDepartmentList" @addShowDialog="addDialog" />
+            <tree-tools :node-data="data" @del_department="getDepartmentList" @addShowDialog="addDialog" @editShowDialog="editDialog" />
           </template>
         </el-tree>
       </el-card>
@@ -62,7 +62,7 @@ export default {
       // console.log(res)
       this.company.name = data.companyName // 公司名赋值
 
-      this.departsList = data.depts
+      this.departsList = data.depts // 公司的平铺数据赋值
 
       this.departs = transFromTreeList(data.depts, '') // 赋值给原数组
     },
@@ -73,6 +73,10 @@ export default {
       this.showDialog = true
       this.nodeData = nodeData
       // console.log(this.nodeData)
+    },
+    editDialog(nodeData) { // 修改按钮
+      this.showDialog = true
+      this.nodeData = nodeData
     }
     // transFromTreeList(list, val) {
     //   const arr = [] // 定义一个数组
