@@ -1,13 +1,15 @@
 <template>
   <div
-    v-loading="loading"
+
     class="departments-container"
-    element-loading-text="拼命加载中"
-    element-loading-spinner="el-icon-loading"
-    element-loading-background="rgba(190, 237, 199, 0.8)"
   >
     <div class="app-container">
-      <el-card>
+      <el-card
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(190, 237, 199, 0.8)"
+      >
         <!-- 用了一个行列布局 -->
         <tree-tools :node-data="company" :is-show="true" @addShowDialog="addDialog" />
 
