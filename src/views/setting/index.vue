@@ -72,11 +72,12 @@ export default {
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.pagesize = val
-      this.getAllroleList()
 
       // 因为点击每页 页容量 的时候, 第一次请求的时候页码并没有改变重置为一
       // 会造成 白屏的情况
       this.page = 1
+
+      this.getAllroleList()
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
