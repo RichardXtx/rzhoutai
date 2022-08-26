@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 /**
- * 获取所有角色劣列表
+ * 获取所有角色列表
  * @param {*} page 当前页
  * @param {*} pagesize 每页可以显示多少条数据
  * @returns
@@ -37,6 +37,30 @@ export const addRoleListApi = data => {
   return request({
     url: '/sys/role',
     method: 'post',
+    data
+  })
+}
+
+/**
+ * 获取员工详情
+ * @param {*} id
+ * @returns
+ */
+export const getRoleApi = id => {
+  return request({
+    url: `/sys/role/${id}`
+  })
+}
+
+/**
+ * 编辑角色
+ * @param {*} data
+ * @returns
+ */
+export const editRoleApi = data => {
+  return request({
+    url: `/sys/role/${data.id}`,
+    method: 'put',
     data
   })
 }

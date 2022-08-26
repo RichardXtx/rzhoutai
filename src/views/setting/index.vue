@@ -20,7 +20,7 @@
               <el-table-column label="操作">
                 <template #default="{row}">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button size="small" type="primary" @click="showEditDialog(row.id)">编辑</el-button>
                   <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
                 </template>
               </el-table-column>
@@ -47,7 +47,7 @@
       </el-card>
 
       <!-- 弹框 -->
-      <el-dialog title="添加数据" :visible="showDialog" @close="closeDialog">
+      <el-dialog :title="showTitle" :visible="showDialog" @close="closeDialog">
 
         <el-form ref="roleForm" :model="form" :rules="rules" label-width="100px">
           <el-form-item label="角色名称" prop="name">
@@ -66,7 +66,7 @@
   </div>
 </template>
 <script>
-import { getAllroleListApi, delRoleListApi, addRoleListApi } from '@/api/role'
+import { getAllroleListApi, delRoleListApi, addRoleListApi, getRoleApi, editRoleApi } from '@/api/role'
 
 export default {
   data() {
@@ -88,6 +88,11 @@ export default {
           { required: true, message: '请输入角色名称', trigger: ['blur', 'change'] }
         ]
       }
+    }
+  },
+  computed: {
+    showTitle() {
+      return this.form.id ? '编辑角色' : '添加角色'
     }
   },
   created() {
@@ -154,12 +159,25 @@ export default {
     submit() { // 确定事件
       this.$refs.roleForm.validate(async val => {
         if (!val) return
-        const res = await addRoleListApi(this.form)
-        console.log(res)
-        this.$message.success('添加成功!')
+
+        if (this.form.id) {
+          await editRoleApi(this.form)
+          this.$message.success('修改成功!')
+        } else {
+          await addRoleListApi(this.form)
+          // console.log(res)
+          this.$message.success('添加成功!')
+        }
+
         this.getAllroleList()
         this.closeDialog()
       })
+    },
+    async showEditDialog(id) { // 编辑角色
+      this.showDialog = true
+      const { data } = await getRoleApi(id)
+      // console.log(res)
+      this.form = data
     }
   }
 }

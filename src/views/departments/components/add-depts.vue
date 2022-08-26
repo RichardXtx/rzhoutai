@@ -53,7 +53,8 @@ export default {
     const nodeDataListFn = (rule, value, callback) => { // 部门名字重复校验
       let children = []
       if (this.form.id) { // 判断是否为编辑事件
-        if (this.nodeData.name === value) { // 判断名字是否和子组件名相同,相同放行
+        if (this.nodeData.name === value) { // 判断名字是否和自身的name是否相同,相同放行
+        // 因为是编辑,所以可以不做修改
           callback()
           return
         } else { // 如果和同级的名字相同那就不放行
