@@ -3,7 +3,7 @@
     <div class="app-container">
       <page-tools>
         <template #left>
-          tiit
+          🎃🌼
         </template>
         <template #right>
           <el-button size="middle" type="success">添加</el-button>

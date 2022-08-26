@@ -23,8 +23,10 @@ import request from '@/utils/request'
 // 批量注册
 import * as directives from '@/directives'
 
-import PageTools from '@/components/PageTools'
-Vue.component('PageTools', PageTools)
+// import PageTools from '@/components/PageTools'
+
+import company from '@/components'
+Vue.use(company)
 
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
