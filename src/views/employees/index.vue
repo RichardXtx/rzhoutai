@@ -15,15 +15,23 @@
       </page-tools>
 
       <!-- 卡片 -->
-      <el-card v-loading="isLoading" style="margin-top: 10px;">
+      <el-card v-loading="isLoading" style="margin-top: 10px">
         <el-table border :data="list">
           <el-table-column label="序号" type="index" :index="indexMethod" />
           <el-table-column label="姓名" prop="username" />
           <el-table-column label="手机号" prop="mobile" />
           <el-table-column label="工号" prop="workNumber" />
-          <el-table-column label="聘用形式" prop="formOfEmployment" :formatter="chooseEmployment" />
+          <el-table-column
+            label="聘用形式"
+            prop="formOfEmployment"
+            :formatter="chooseEmployment"
+          />
           <el-table-column label="部门" prop="departmentName" />
-          <el-table-column label="入职时间" prop="timeOfEntry" />
+          <el-table-column label="入职时间" prop="timeOfEntry">
+            <template #default="{ row }">
+              {{ row.timeOfEntry | strainer }}
+            </template>
+          </el-table-column>
           <el-table-column label="操作" fixed="right" width="280">
             <template>
               <el-button type="text" size="small">查看</el-button>
@@ -53,7 +61,16 @@
 <script>
 import { getUserROleListApi } from '@/api/employees'
 import empyess from '@/constant/employees'
+
+import dayjs from 'dayjs'
 export default {
+  filters: { // 过滤器
+    strainer(val) {
+      // console.log(val)
+      return dayjs(val).format('YYYY-MM-DD')
+    }
+
+  },
   data() {
     return {
       page: 1,
@@ -69,30 +86,34 @@ export default {
     this.getUserROleList()
   },
   methods: {
-    async getUserROleList() { // 获取员工列表
+    async getUserROleList() {
+      // 获取员工列表
       this.isLoading = true
-      const { data: { rows, total }} = await getUserROleListApi(this.page, this.size)
+      const {
+        data: { rows, total }
+      } = await getUserROleListApi(this.page, this.size)
       // console.log(res)
       this.list = rows
       this.total = total
       this.isLoading = false
     },
-    handleCurrentChange(val) { // 页码变化函数
+    handleCurrentChange(val) {
+      // 页码变化函数
       this.page = val
       this.getUserROleList()
     },
-    indexMethod(index) { // 页码序号函数
+    indexMethod(index) {
+      // 页码序号函数
       return (this.page - 1) * this.size + index + 1
     },
-    chooseEmployment(row, column, cellValue, index) { // 修改聘用形式
-      const obj = this.hireType.find(item => item.id === cellValue)
+    chooseEmployment(row, column, cellValue, index) {
+      // 修改聘用形式
+      const obj = this.hireType.find((item) => item.id === cellValue)
       return obj ? obj.value : '未知'
     }
   }
-
 }
 </script>
 
 <style>
-
 </style>
