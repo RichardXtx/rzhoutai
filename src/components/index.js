@@ -5,3 +5,4 @@ export default {
     Vue.component('PageTools', pageTools)
   }
 }
+
