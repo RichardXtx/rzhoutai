@@ -25,3 +25,15 @@ export const getUserROleListApi = (page, size) => {
     }
   })
 }
+
+/**
+ * 删除id
+ * @param {*} id
+ * @returns
+ */
+export const delEmployeesApi = id => {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'delete'
+  })
+}

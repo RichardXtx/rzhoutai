@@ -33,13 +33,13 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="280">
-            <template>
+            <template #default="{row}">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="delEmployees(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getUserROleListApi } from '@/api/employees'
+import { getUserROleListApi, delEmployeesApi } from '@/api/employees'
 import empyess from '@/constant/employees'
 
 export default {
@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       page: 1,
-      size: 10,
+      size: 2,
       total: 0,
       list: [],
       isLoading: false,
@@ -109,6 +109,17 @@ export default {
       // 修改聘用形式
       const obj = this.hireType.find((item) => item.id === +cellValue)
       return obj ? obj.value : '未知'
+    },
+    delEmployees(id) {
+      this.$confirm('确定要删除吗？', '提示').then(async _ => {
+        if (this.page > 1 && this.list.length === 1) {
+          this.page--
+        }
+        const res = await delEmployeesApi(id)
+        console.log(res)
+        this.$message.success('删除成功!')
+        this.getUserROleList()
+      }).catch(_ => {})
     }
   }
 }
