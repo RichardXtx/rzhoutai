@@ -21,7 +21,7 @@
           <el-table-column label="姓名" prop="username" />
           <el-table-column label="手机号" prop="mobile" />
           <el-table-column label="工号" prop="workNumber" />
-          <el-table-column label="聘用形式" prop="formOfEmployment" />
+          <el-table-column label="聘用形式" prop="formOfEmployment" :formatter="chooseEmployment" />
           <el-table-column label="部门" prop="departmentName" />
           <el-table-column label="入职时间" prop="timeOfEntry" />
           <el-table-column label="操作" fixed="right" width="280">
@@ -52,21 +52,24 @@
 
 <script>
 import { getUserROleListApi } from '@/api/employees'
+import empyess from '@/constant/employees'
 export default {
   data() {
     return {
       page: 1,
-      size: 3,
+      size: 10,
       total: 0,
       list: [],
-      isLoading: false
+      isLoading: false,
+
+      hireType: empyess.hireType
     }
   },
   created() {
     this.getUserROleList()
   },
   methods: {
-    async getUserROleList() {
+    async getUserROleList() { // 获取员工列表
       this.isLoading = true
       const { data: { rows, total }} = await getUserROleListApi(this.page, this.size)
       // console.log(res)
@@ -74,13 +77,16 @@ export default {
       this.total = total
       this.isLoading = false
     },
-    handleCurrentChange(val) {
+    handleCurrentChange(val) { // 页码变化函数
       this.page = val
       this.getUserROleList()
     },
-    indexMethod(index) {
-      console.log(1)
+    indexMethod(index) { // 页码序号函数
       return (this.page - 1) * this.size + index + 1
+    },
+    chooseEmployment(row, column, cellValue, index) { // 修改聘用形式
+      const obj = this.hireType.find(item => item.id === cellValue)
+      return obj ? obj.value : '未知'
     }
   }
 
