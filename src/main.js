@@ -22,6 +22,7 @@ import request from '@/utils/request'
 
 // 批量注册
 import * as directives from '@/directives'
+import * as filters from '@/filters' // 过滤器
 
 // import PageTools from '@/components/PageTools'
 
@@ -44,6 +45,10 @@ Vue.prototype.$request = request
 // 第二种方式：批量注册
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
+})
+
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 new Vue({

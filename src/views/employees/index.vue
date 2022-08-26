@@ -62,15 +62,14 @@
 import { getUserROleListApi } from '@/api/employees'
 import empyess from '@/constant/employees'
 
-import dayjs from 'dayjs'
 export default {
-  filters: { // 过滤器
-    strainer(val) {
-      // console.log(val)
-      return dayjs(val).format('YYYY-MM-DD')
-    }
+  // filters: { // 过滤器
+  //   strainer(val) {
+  //     // console.log(val)
+  //     return dayjs(val).format('YYYY-MM-DD')
+  //   }
 
-  },
+  // },
   data() {
     return {
       page: 1,
@@ -108,7 +107,7 @@ export default {
     },
     chooseEmployment(row, column, cellValue, index) {
       // 修改聘用形式
-      const obj = this.hireType.find((item) => item.id === cellValue)
+      const obj = this.hireType.find((item) => item.id === +cellValue)
       return obj ? obj.value : '未知'
     }
   }
