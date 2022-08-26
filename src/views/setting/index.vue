@@ -2,9 +2,9 @@
   <div class="setting-container">
     <div class="app-container">
       <el-card v-loading="loading">
-        <el-tabs>
+        <el-tabs v-model="activeName">
           <!-- 左侧 -->
-          <el-tab-pane label="角色管理">
+          <el-tab-pane label="角色管理" name="role">
             <!-- 按钮 -->
             <el-button
               icon="el-icon-plus"
@@ -40,8 +40,29 @@
             </div>
           </el-tab-pane>
 
-          <el-tab-pane label="公司信息">
-            <!-- 公司信息 -->
+          <el-tab-pane label="公司信息" name="manager">
+            <!-- 警告信息 -->
+            <el-alert
+              title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
+              type="info"
+              show-icon
+              :closable="false"
+            />
+            <!-- 表单 -->
+            <el-form label-width="120px" style="margin-top:50px">
+              <el-form-item label="公司名称">
+                <el-input v-model="companyForm.name" disabled style="width:400px" />
+              </el-form-item>
+              <el-form-item label="公司地址">
+                <el-input v-model="companyForm.companyAddress" disabled style="width:400px" />
+              </el-form-item>
+              <el-form-item label="邮箱">
+                <el-input v-model="companyForm.mailbox" disabled style="width:400px" />
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input v-model="companyForm.remarks" type="textarea" :rows="3" disabled style="width:400px" />
+              </el-form-item>
+            </el-form>
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -67,6 +88,8 @@
 </template>
 <script>
 import { getAllroleListApi, delRoleListApi, addRoleListApi, getRoleApi, editRoleApi } from '@/api/role'
+import { getCompanyApi } from '@/api/company'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -78,10 +101,18 @@ export default {
 
       loading: false, // 加载默认值
 
+      activeName: 'role',
+
       showDialog: false, // 是否展示表单
       form: {
         name: '',
         description: ''
+      },
+      companyForm: {
+        name: '',
+        companyAddress: '',
+        remarks: '',
+        mailbox: ''
       },
       rules: {
         name: [
@@ -91,12 +122,21 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', ['userInfo']),
     showTitle() {
       return this.form.id ? '编辑角色' : '添加角色'
     }
   },
+  watch: {
+    activeName() {
+      if (this.activeName === 'manager') {
+        this.getCompany()
+      }
+    }
+  },
   created() {
     this.getAllroleList()
+    this.getCompany()
   },
   methods: {
     async getAllroleList() { // 获取角色列表
@@ -178,6 +218,11 @@ export default {
       const { data } = await getRoleApi(id)
       // console.log(res)
       this.form = data
+    },
+    async getCompany() {
+      const { data } = await getCompanyApi(this.userInfo.companyId)
+      // console.log(res)
+      this.companyForm = data
     }
   }
 }
