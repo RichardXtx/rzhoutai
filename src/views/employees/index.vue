@@ -10,7 +10,7 @@
         <template #right>
           <el-button type="warning" size="small">excel导入</el-button>
           <el-button type="danger" size="small">excel导出</el-button>
-          <el-button type="primary" size="small">新增员工</el-button>
+          <el-button type="primary" size="small" @click="addEmployee">新增员工</el-button>
         </template>
       </page-tools>
 
@@ -54,6 +54,9 @@
           />
         </div>
       </el-card>
+
+      <!-- 弹框 -->
+      <add-empolyee :show-dialog.sync="showDialog" />
     </div>
   </div>
 </template>
@@ -62,15 +65,13 @@
 import { getUserROleListApi, delEmployeesApi } from '@/api/employees'
 import empyess from '@/constant/employees'
 
-export default {
-  // filters: { // 过滤器
-  //   strainer(val) {
-  //     // console.log(val)
-  //     return dayjs(val).format('YYYY-MM-DD')
-  //   }
+import addEmpolyee from './components/add-employee.vue'
 
-  // },
-  data() {
+export default {
+  components: { // 注册组件
+    addEmpolyee
+  },
+  data() { // 初始化数据
     return {
       page: 1,
       size: 2,
@@ -78,13 +79,15 @@ export default {
       list: [],
       isLoading: false,
 
-      hireType: empyess.hireType
+      hireType: empyess.hireType,
+
+      showDialog: false // 弹框默认关闭
     }
   },
   created() {
     this.getUserROleList()
   },
-  methods: {
+  methods: { // 方法
     async getUserROleList() {
       // 获取员工列表
       this.isLoading = true
@@ -96,8 +99,7 @@ export default {
       this.total = total
       this.isLoading = false
     },
-    handleCurrentChange(val) {
-      // 页码变化函数
+    handleCurrentChange(val) { // 页码变化函数
       this.page = val
       this.getUserROleList()
     },
@@ -110,7 +112,7 @@ export default {
       const obj = this.hireType.find((item) => item.id === +cellValue)
       return obj ? obj.value : '未知'
     },
-    delEmployees(id) {
+    delEmployees(id) { // 删除
       this.$confirm('确定要删除吗？', '提示').then(async _ => {
         if (this.page > 1 && this.list.length === 1) {
           this.page--
@@ -120,6 +122,9 @@ export default {
         this.$message.success('删除成功!')
         this.getUserROleList()
       }).catch(_ => {})
+    },
+    addEmployee() { // 新增
+      this.showDialog = true
     }
   }
 }
