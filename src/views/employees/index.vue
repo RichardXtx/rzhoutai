@@ -9,7 +9,7 @@
 
         <template #right>
           <el-button type="warning" size="small" @click="$router.push('/import?type=user')">excel导入</el-button>
-          <el-button type="danger" size="small">excel导出</el-button>
+          <el-button type="danger" size="small" @click="exportExcel">excel导出</el-button>
           <el-button type="primary" size="small" @click="addEmployee">新增员工</el-button>
         </template>
       </page-tools>
@@ -127,11 +127,28 @@ export default {
     },
     addEmployee() { // 新增
       this.showDialog = true
-    }
+    },
     // async getDepartment() {
     //   const res = await getDepartmentApi()
     //   console.log(res)
-    // }
+    // },
+    async exportExcel() {
+      // 先获取所有数据
+      const res = await getUserROleListApi(1, this.total)
+      console.log(res)
+      import('@/vendor/Export2Excel').then(excel => {
+        excel.export_json_to_excel({
+          header: ['姓名', '工资'], // 表头 必填
+          data: [
+            ['氛围', 1000],
+            ['改变', 5000]
+          ], // 具体数据 必填
+          filename: 'excel-list', // 非必填
+          autoWidth: true, // 非必填
+          bookType: 'xlsx' // 非必填
+        })
+      })
+    }
   }
 }
 </script>
