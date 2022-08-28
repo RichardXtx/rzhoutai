@@ -67,6 +67,8 @@ import empyess from '@/constant/employees'
 
 import addEmpolyee from './components/add-employee.vue'
 
+// import { getDepartmentApi } from '@/api/department'
+
 export default {
   components: { // 注册组件
     addEmpolyee
@@ -126,6 +128,10 @@ export default {
     addEmployee() { // 新增
       this.showDialog = true
     }
+    // async getDepartment() {
+    //   const res = await getDepartmentApi()
+    //   console.log(res)
+    // }
   }
 }
 </script>

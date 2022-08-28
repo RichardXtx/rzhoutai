@@ -4,7 +4,7 @@
     :visible="showDialog"
     top="8vh"
     @close="closeDialog"
-    @open="openDialog"
+    @click.native="closeBm"
   >
     <!-- 表单 -->
     <el-form ref="addForm" :model="formData" :rules="rules" label-width="120px">
@@ -48,7 +48,10 @@
           v-model="formData.departmentName"
           style="width: 50%"
           placeholder="请选择部门"
+          @focus="focusFn"
+          @click.native.stop="transFromTree"
         />
+        <el-tree v-if="isShowTree" v-loading="isLoading" :data="list" :props="{ label: 'name' }" @node-click="handleNodeClick" />
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker
@@ -143,7 +146,9 @@ export default {
             trigger: ['blur', 'change']
           }
         ]
-      }
+      },
+      isShowTree: false,
+      isLoading: false
     }
   },
   methods: {
@@ -158,18 +163,33 @@ export default {
         if (!val) return
       })
     },
-    async transFromTree() {
+    async transFromTree() { // 展示树状数据
+      this.isShowTree = !this.isShowTree
+      this.isLoading = true
       // 转换树形图
       const {
         data: { depts }
       } = await getDepartmentApi()
       //   console.log(res)
       this.list = transFromTreeList(depts, '')
-      //   console.log(this.list)
+      // console.log(this.list)
+      this.isLoading = false
     },
-    openDialog() {
-      // 打开弹框触发的事件
+    focusFn() { // 聚焦的时候
+      this.isShowTree = true
       this.transFromTree()
+    },
+    handleNodeClick(data) { // 点击树状结构赋值
+      // console.log(data)
+      // 如果有子节点就不让赋值给input框
+      if (data.children && data.children.length > 0) {
+        return
+      }
+      this.formData.departmentName = data.name
+      this.isShowTree = false
+    },
+    closeBm() { // 点击空白关闭
+      this.isShowTree = false
     }
   }
 }
