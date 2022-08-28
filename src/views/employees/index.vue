@@ -8,7 +8,7 @@
         </template>
 
         <template #right>
-          <el-button type="warning" size="small" @click="$router.push('/import')">excel导入</el-button>
+          <el-button type="warning" size="small" @click="$router.push('/import?type=user')">excel导入</el-button>
           <el-button type="danger" size="small">excel导出</el-button>
           <el-button type="primary" size="small" @click="addEmployee">新增员工</el-button>
         </template>

@@ -50,3 +50,16 @@ export const addEmployeesApi = form => {
     data: form
   })
 }
+
+/**
+ * 批量导入
+ * @param {*} list
+ * @returns
+ */
+export const bachEmployeesApi = list => {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data: list
+  })
+}
