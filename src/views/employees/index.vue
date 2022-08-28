@@ -76,7 +76,7 @@ export default {
   data() { // 初始化数据
     return {
       page: 1,
-      size: 2,
+      size: 10,
       total: 0,
       list: [],
       isLoading: false,

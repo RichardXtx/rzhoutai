@@ -37,3 +37,16 @@ export const delEmployeesApi = id => {
     method: 'delete'
   })
 }
+
+/**
+ * 添加员工
+ * @param {*} form
+ * @returns
+ */
+export const addEmployeesApi = form => {
+  return request({
+    url: '/sys/user',
+    method: 'post',
+    data: form
+  })
+}

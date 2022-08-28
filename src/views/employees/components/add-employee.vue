@@ -34,7 +34,8 @@
           v-model="formData.formOfEmployment"
           style="width: 50%"
           placeholder="请选择"
-        />
+        >
+          <el-option v-for="item in hireType" :key="item.id" :value="item.id" :label="item.value" /></el-select>
       </el-form-item>
       <el-form-item label="工号" prop="workNumber">
         <el-input
@@ -75,6 +76,10 @@
 import { getDepartmentApi } from '@/api/department'
 
 import { transFromTreeList } from '@/utils/index'
+
+import empyess from '@/constant/employees'
+import { addEmployeesApi } from '@/api/employees'
+
 export default {
   props: {
     showDialog: {
@@ -150,7 +155,10 @@ export default {
         ]
       },
       isShowTree: false,
-      isLoading: false
+      isLoading: false,
+
+      hireType: empyess.hireType
+
     }
   },
   methods: {
@@ -161,8 +169,13 @@ export default {
     },
     submit() {
       // 确定事件
-      this.$refs.addForm.validate((val) => {
+      this.$refs.addForm.validate(async(val) => {
         if (!val) return
+        await addEmployeesApi(this.formData)
+        // console.log(res)
+        this.$message.success('添加成功!')
+        this.closeDialog()
+        this.$parent.getUserROleList()
       })
     },
     async transFromTree() { // 展示树状数据
@@ -210,7 +223,7 @@ export default {
   padding-right: 5px;
   overflow: hidden;
   background-color: #fff;
-  max-height: 200px;
+  max-height: 160px;
   overflow: auto;
   ::v-deep {
     .el-tree-node__content {
