@@ -48,10 +48,12 @@
           v-model="formData.departmentName"
           style="width: 50%"
           placeholder="请选择部门"
-          @focus="focusFn"
+          :readonly="true"
           @click.native.stop="transFromTree"
         />
-        <el-tree v-if="isShowTree" v-loading="isLoading" :data="list" :props="{ label: 'name' }" @node-click="handleNodeClick" />
+        <div v-if="isShowTree" class="tree-box">
+          <el-tree v-loading="isLoading" accordion :data="list" :props="{ label: 'name' }" @node-click="handleNodeClick" />
+        </div>
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker
@@ -175,10 +177,10 @@ export default {
       // console.log(this.list)
       this.isLoading = false
     },
-    focusFn() { // 聚焦的时候
-      this.isShowTree = true
-      this.transFromTree()
-    },
+    // focusFn() { // 聚焦的时候
+    //   this.isShowTree = true
+    //   // this.transFromTree()
+    // },
     handleNodeClick(data) { // 点击树状结构赋值
       // console.log(data)
       // 如果有子节点就不让赋值给input框
@@ -195,5 +197,25 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.tree-box {
+  position: absolute;
+  width: 50%;
+  min-height: 50px;
+  left: 0;
+  top: 45px;
+  z-index: 100;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding-right: 5px;
+  overflow: hidden;
+  background-color: #fff;
+  max-height: 200px;
+  overflow: auto;
+  ::v-deep {
+    .el-tree-node__content {
+      height: auto;
+    }
+  }
+}
 </style>
