@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <UploadExcel :on-success="handleSuccess" :before-upload="beforeUpload" />
   </div>
 </template>
 
@@ -13,6 +14,16 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  methods: {
+    beforeUpload(file) {
+      return true
+    },
+    handleSuccess({ results, header }) {
+      console.log(results)
+      console.log(header)
+    }
+
   }
 }
 </script>

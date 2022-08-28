@@ -76,6 +76,17 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/import',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'import',
+        component: () => import('@/views/import')
+      }
+    ]
+  },
 
   // 输入的地址除了以上地址,都显示 404 页面
   { path: '*', redirect: '/404', hidden: true }
