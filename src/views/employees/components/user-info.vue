@@ -282,6 +282,12 @@
 <script>
 import EmployeeEnum from '@/constant/employees'
 
+// 个人信息上方api
+import { userInfoApi } from '@/api/user'
+import { saveUserDetailByIdApi, getPersonalDetailApi, updatePersonalApi } from '@/api/employees'
+
+// 个人信息下方api
+
 export default {
   data() {
     return {
@@ -364,17 +370,42 @@ export default {
       return this.$route.params.id
     }
   },
+  created() {
+    this.userInfod()
+    this.getPersonalDetail()
+  },
   methods: {
-    saveUser() {
-
+    async userInfod() { // 上方个人信息获取
+      const { data } = await userInfoApi(this.userId)
+      //   console.log(res)
+      this.userInfo = data
     },
-    savePersonal() {
+    async saveUser() { // 上方个人信息更新
+      await saveUserDetailByIdApi(this.userInfo)
 
+      this.$message.success('上方信息更新成功!')
+    },
+    async getPersonalDetail() { // 下方个人信息获取
+      const { data } = await getPersonalDetailApi(this.userId)
+      //   console.log(res)
+      this.formData = data
+    },
+    async savePersonal() { // 下方个人信息更新
+      await updatePersonalApi(this.formData)
+      //   console.log(res)
+      this.$message.success('下方信息更新成功!')
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.el-form{
+    // background-color: rgb(182, 177, 177);
+    border: 2px solid ;
+    margin-top: 3px;
+    border-radius: 3px;
+
+}
 
 </style>
