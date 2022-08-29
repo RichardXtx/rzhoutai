@@ -67,6 +67,8 @@ import empyess from '@/constant/employees'
 
 import addEmpolyee from './components/add-employee.vue'
 
+import { strainer } from '@/filters'
+
 // import { getDepartmentApi } from '@/api/department'
 
 export default {
@@ -164,7 +166,17 @@ export default {
         const thean = []
         headersArr.forEach(key => {
           const english = headersRelations[key]
-          const value = item[english]
+          let value = item[english]
+          if (['timeOfEntry', 'correctionTime'].includes(english)) {
+            // 如果是入职日期和聘用时间,那就用 时间格式转换 ,没有时间就给 空值
+            value = value ? strainer(value) : ''
+          }
+          if ('formOfEmployment'.includes(english)) {
+            // 找如果 id 和 值相同的话
+            // 就赋值 hireType 的value 给 value
+            const res = this.hireType.find(hyformat => hyformat.id === value)
+            value = res ? res.value : '未知'
+          }
           // console.log(english)
           // console.log(value)
           thean.push(value)
