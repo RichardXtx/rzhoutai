@@ -5,12 +5,27 @@
         <el-tabs>
           <el-tab-pane label="登录账号设置">
             <!-- 放置表单 -->
-            <el-form ref="userForm" :model="userInfo" :rules="rules" label-width="120px" style="margin-left: 120px; margin-top:30px">
+            <el-form
+              ref="userForm"
+              :model="userInfo"
+              :rules="rules"
+              label-width="120px"
+              style="margin-left: 120px; margin-top: 30px"
+            >
               <el-form-item prop="username" label="姓名:">
-                <el-input v-model="userInfo.username" placeholder="请输入姓名" style="width:300px" />
+                <el-input
+                  v-model="userInfo.username"
+                  placeholder="请输入姓名"
+                  style="width: 300px"
+                />
               </el-form-item>
               <el-form-item prop="newPassword" label="新密码:">
-                <el-input v-model="userInfo.newPassword" placeholder="请输入新密码" style="width:300px" type="password" />
+                <el-input
+                  v-model="userInfo.newPassword"
+                  placeholder="请输入新密码"
+                  style="width: 300px"
+                  type="password"
+                />
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="update">更新</el-button>
@@ -19,9 +34,11 @@
           </el-tab-pane>
           <el-tab-pane label="个人详情">
             <!-- 内容 -->
+            <userinfo />
           </el-tab-pane>
           <el-tab-pane label="岗位信息">
             <!-- 内容 -->
+            <jobinfo />
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -32,8 +49,12 @@
 <script>
 import { userInfoApi } from '@/api/user'
 import { saveUserDetailByIdApi } from '@/api/employees'
+
+import userinfo from './components/user-info.vue'
+import jobinfo from './components/job-info.vue'
 export default {
   name: 'EmployeesDetail',
+  components: { userinfo, jobinfo },
   data() {
     return {
       userInfo: {
@@ -43,10 +64,19 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: '姓名不能为空', trigger: ['blur', 'change'] }
+          {
+            required: true,
+            message: '姓名不能为空',
+            trigger: ['blur', 'change']
+          }
         ],
         newPassword: [
-          { min: 6, max: 9, message: '密码必须是6-9位', trigger: ['blur', 'change'] }
+          {
+            min: 6,
+            max: 9,
+            message: '密码必须是6-9位',
+            trigger: ['blur', 'change']
+          }
         ]
       }
     }
@@ -61,15 +91,23 @@ export default {
   },
   methods: {
     async getuserInfo() {
+      // 通过Id 获取用户信息
       const { data } = await userInfoApi(this.id)
       //   console.log(res)
       this.userInfo.id = data.id
       this.userInfo.username = data.username
     },
-    async update() {
-      const res = await saveUserDetailByIdApi({ ...this.userInfo, password: this.userInfo.newPassword })
-      console.log(res)
-      this.$message.success('更新个人信息成功')
+    update() {
+      // 更新个人信息
+      this.$refs.userForm.validate(async (flag) => {
+        if (!flag) return
+        const res = await saveUserDetailByIdApi({
+          ...this.userInfo,
+          password: this.userInfo.newPassword
+        })
+        console.log(res)
+        this.$message.success('更新个人信息成功')
+      })
     }
   }
 }
