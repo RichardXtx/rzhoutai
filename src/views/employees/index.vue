@@ -138,6 +138,8 @@ export default {
       // 先获取所有数据
       const { data: { rows }} = await getUserROleListApi(1, this.total)
       // console.log(res)
+      const multiHeader = [['姓名', '主要信息', '', '', '', '', '部门']]
+
       const headersArr = ['姓名', '手机号', '入职日期', '聘用形式', '转正日期', '工号', '部门']
       const headersRelations = {
         '姓名': 'username',
@@ -149,13 +151,16 @@ export default {
         '部门': 'departmentName'
       }
       const res = this.exportExcelList(rows, headersArr, headersRelations)
+      const merges = ['A1:A2', 'B1:F1', 'G1:G2']
       import('@/vendor/Export2Excel').then(excel => {
         excel.export_json_to_excel({
           header: headersArr, // 表头 必填
           data: res, // 具体数据 必填
           filename: 'excel-list', // 非必填
           autoWidth: true, // 非必填
-          bookType: 'xlsx' // 非必填
+          bookType: 'xlsx', // 非必填
+          multiHeader,
+          merges
         })
       })
     },
