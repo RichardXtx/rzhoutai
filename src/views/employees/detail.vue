@@ -5,15 +5,15 @@
         <el-tabs>
           <el-tab-pane label="登录账号设置">
             <!-- 放置表单 -->
-            <el-form label-width="120px" style="margin-left: 120px; margin-top:30px">
-              <el-form-item label="姓名:">
-                <el-input style="width:300px" />
+            <el-form ref="userForm" :model="userInfo" :rules="rules" label-width="120px" style="margin-left: 120px; margin-top:30px">
+              <el-form-item prop="username" label="姓名:">
+                <el-input v-model="userInfo.username" placeholder="请输入姓名" style="width:300px" />
               </el-form-item>
-              <el-form-item label="密码:">
-                <el-input style="width:300px" type="password" />
+              <el-form-item prop="newPassword" label="新密码:">
+                <el-input v-model="userInfo.newPassword" placeholder="请输入新密码" style="width:300px" type="password" />
               </el-form-item>
               <el-form-item>
-                <el-button type="primary">更新</el-button>
+                <el-button type="primary" @click="update">更新</el-button>
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -30,7 +30,47 @@
 </template>
 
 <script>
+import { userInfoApi } from '@/api/user'
+import { saveUserDetailByIdApi } from '@/api/employees'
 export default {
-  name: 'EmployeesDetail'
+  name: 'EmployeesDetail',
+  data() {
+    return {
+      userInfo: {
+        id: '',
+        username: '',
+        newPassword: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '姓名不能为空', trigger: ['blur', 'change'] }
+        ],
+        newPassword: [
+          { min: 6, max: 9, message: '密码必须是6-9位', trigger: ['blur', 'change'] }
+        ]
+      }
+    }
+  },
+  computed: {
+    id() {
+      return this.$route.params.id
+    }
+  },
+  created() {
+    this.getuserInfo()
+  },
+  methods: {
+    async getuserInfo() {
+      const { data } = await userInfoApi(this.id)
+      //   console.log(res)
+      this.userInfo.id = data.id
+      this.userInfo.username = data.username
+    },
+    async update() {
+      const res = await saveUserDetailByIdApi({ ...this.userInfo, password: this.userInfo.newPassword })
+      console.log(res)
+      this.$message.success('更新个人信息成功')
+    }
+  }
 }
 </script>
