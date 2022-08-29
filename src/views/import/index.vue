@@ -50,15 +50,15 @@ export default {
           const englishKey = userRelations[key]
 
           if (['timeOfEntry', 'correctionTime'].includes(englishKey)) {
-            obj[englishKey] = this.formatExcelDate(item[key], '-')
+            obj[englishKey] = this.formatExcelDate(item[key], '/')
           } else {
             obj[englishKey] = item[key]
           }
         }
         list.push(obj)
       })
+      // console.log(list)
       await bachEmployeesApi(list)
-      // console.log(res)
       this.$router.back()
     }
   }

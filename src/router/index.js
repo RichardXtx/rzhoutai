@@ -79,6 +79,7 @@ export const constantRoutes = [
   {
     path: '/import',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: '',

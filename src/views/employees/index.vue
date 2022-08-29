@@ -134,20 +134,44 @@ export default {
     // },
     async exportExcel() {
       // 先获取所有数据
-      const res = await getUserROleListApi(1, this.total)
-      console.log(res)
+      const { data: { rows }} = await getUserROleListApi(1, this.total)
+      // console.log(res)
+      const headersArr = ['姓名', '手机号', '入职日期', '聘用形式', '转正日期', '工号', '部门']
+      const headersRelations = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      const res = this.exportExcelList(rows, headersArr, headersRelations)
       import('@/vendor/Export2Excel').then(excel => {
         excel.export_json_to_excel({
-          header: ['姓名', '工资'], // 表头 必填
-          data: [
-            ['氛围', 1000],
-            ['改变', 5000]
-          ], // 具体数据 必填
+          header: headersArr, // 表头 必填
+          data: res, // 具体数据 必填
           filename: 'excel-list', // 非必填
           autoWidth: true, // 非必填
           bookType: 'xlsx' // 非必填
         })
       })
+    },
+    exportExcelList(rows, headersArr, headersRelations) { // 导出列表函数
+      const list = []
+      rows.forEach(item => {
+        // console.log(item)
+        const thean = []
+        headersArr.forEach(key => {
+          const english = headersRelations[key]
+          const value = item[english]
+          // console.log(english)
+          // console.log(value)
+          thean.push(value)
+        })
+        list.push(thean)
+      })
+      return list
     }
   }
 }
