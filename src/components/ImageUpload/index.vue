@@ -44,9 +44,6 @@ export default {
   data() {
     return {
       fileList: [
-        {
-          url: 'https://www.bing.com/th/id/OGC.cfa9aad90c9c26339be49f6da22d6c44?pid=1.7&rurl=https%3a%2f%2fpic1.zhimg.com%2f50%2fv2-cfa9aad90c9c26339be49f6da22d6c44_hd.gif%3fsource%3d1940ef5c&ehk=0beLbuk347uk4nz0FxnUi14WTzgGPuxQxewn4iPWTNE%3d'
-        }
 
       ],
 
@@ -58,6 +55,9 @@ export default {
     ...mapGetters(['name']),
     isDisabled() {
       return this.fileList.length >= this.limit
+    },
+    isStarfPhoto() {
+      return this.fileList.every(item => item.status === 'success')
     }
   },
   methods: {
