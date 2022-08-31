@@ -81,9 +81,9 @@ import empyess from '@/constant/employees'
 
 import addEmpolyee from './components/add-employee.vue'
 
-import { strainer } from '@/filters'
+import { strainer } from '@/filters' // 引入自定义指令
 
-import QrCode from 'qrcode'
+import QrCode from 'qrcode' // 引入二维码组件
 
 // import { getDepartmentApi } from '@/api/department'
 
@@ -104,7 +104,7 @@ export default {
       showDialog: false, // 弹框默认关闭
       defaultImg: 'https://img2.baidu.com/it/u=2203692359,101708973&fm=253&fmt=auto&app=138&f=PNG?w=401&h=401',
       sui,
-      showCodeDialog: false
+      showCodeDialog: false // 二维码碳层
     }
   },
   created() {
