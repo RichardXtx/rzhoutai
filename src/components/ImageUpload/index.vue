@@ -10,6 +10,7 @@
       :file-list="fileList"
       :on-preview="preview"
       :on-change="handleChange"
+      :before-upload="handleBeforeUpload"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -62,7 +63,7 @@ export default {
       this.imgUrl = file.url
       this.showDialog = true
     },
-    handleRemove(file, fileList) {
+    handleRemove(file, fileList) { // 删除
       // 第一种方法
       // this.fileList = [...fileList]
 
@@ -75,12 +76,24 @@ export default {
       // console.log(file)
       // console.log(fileList)
     },
-    handleRequest(obj) {
-      // console.log(obj)
+    handleRequest(obj) { // 自定义上传
+      // console.dir(obj)
     },
-    handleChange(file, fileList) {
+    handleChange(file, fileList) { // 上传图片改变
       this.fileList = [...fileList]
-      console.log(fileList)
+      // console.log(fileList)
+    },
+    handleBeforeUpload(file) {
+      const imgType = ['image/jpeg', 'image/gif', 'image/bmp', 'image/png', 'image/jpg']
+      if (!imgType.includes(file.type)) {
+        this.$message.error('图片格式不正确!')
+        return false
+      }
+
+      if (file.size / 1024 / 1024 > 2) {
+        this.$message.error('图片大小不能超过2M')
+        return false
+      }
     }
   }
 }
