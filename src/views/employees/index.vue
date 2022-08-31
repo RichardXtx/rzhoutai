@@ -20,7 +20,7 @@
           <el-table-column label="序号" type="index" :index="indexMethod" />
           <el-table-column label="头像" prop="staffPhoto">
             <template #default="{row}">
-              <img v-imerror="sui" :src="row.staffPhoto||defaultImg" alt="" class="avator">
+              <img v-imerror="sui" :src="row.staffPhoto||defaultImg" alt="" class="avator" @click="openPhoto(row.staffPhoto)">
 
             </template>
 
@@ -65,6 +65,11 @@
 
       <!-- 弹框 -->
       <add-empolyee :show-dialog.sync="showDialog" />
+      <el-dialog :visible.sync="showCodeDialog" title="二维码" :close-on-click-modal="false" @close="closeCodeDialog">
+        <el-row type="flex" justify="center">
+          <canvas ref="myCanvas" />
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -77,6 +82,8 @@ import empyess from '@/constant/employees'
 import addEmpolyee from './components/add-employee.vue'
 
 import { strainer } from '@/filters'
+
+import QrCode from 'qrcode'
 
 // import { getDepartmentApi } from '@/api/department'
 
@@ -96,7 +103,8 @@ export default {
 
       showDialog: false, // 弹框默认关闭
       defaultImg: 'https://img2.baidu.com/it/u=2203692359,101708973&fm=253&fmt=auto&app=138&f=PNG?w=401&h=401',
-      sui
+      sui,
+      showCodeDialog: false
     }
   },
   created() {
@@ -141,10 +149,6 @@ export default {
     addEmployee() { // 新增
       this.showDialog = true
     },
-    // async getDepartment() {
-    //   const res = await getDepartmentApi()
-    //   console.log(res)
-    // },
     async exportExcel() {
       // 先获取所有数据
       const { data: { rows }} = await getUserROleListApi(1, this.total)
@@ -200,6 +204,17 @@ export default {
         list.push(thean)
       })
       return list
+    },
+    openPhoto(url) { // 点击头像打开二维码弹框
+      if (!url) return
+      this.showCodeDialog = true
+      this.$nextTick(() => {
+        // 如果这里 url 写的是网址, 就会跳转到对应网址 (二维码分享效果)
+        QrCode.toCanvas(this.$refs.myCanvas, url)
+      })
+    },
+    closeCodeDialog() { // 关闭二维码弹框
+      this.showCodeDialog = false
     }
   }
 }
