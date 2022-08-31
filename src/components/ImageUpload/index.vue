@@ -29,6 +29,7 @@
 import { mapGetters } from 'vuex'
 
 import cos from '@/utils/cos'
+import { status } from 'nprogress'
 
 export default {
 //   SecretId: AKIDDBtMYU9YgX6PRBernSqxoOhjV0ECtKUP
@@ -81,6 +82,7 @@ export default {
     },
     handleRequest({ file }) { // 自定义上传
       // console.dir(obj)
+      const fileObj = this.fileList.find(item => item.uid === file.uid)
       cos.putObject({
         Bucket: 'yu-1309914777', /* 存储桶 */
         Region: 'ap-beijing', /* 存储桶所在地域，必须字段 */
@@ -92,7 +94,14 @@ export default {
           console.log(JSON.stringify(progressData))
         }
       }, (err, data) => {
-        console.log(err || data)
+        // console.log(err || data)
+
+        if (err) {
+          this.$message.error('上传失败!')
+          return
+        }
+        fileObj.url = 'https://' + data.Location
+        fileObj.status = 'success'
       })
     },
     handleChange(file, fileList) { // 上传图片改变
