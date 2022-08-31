@@ -90,6 +90,8 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <ImageUpload ref="secondStaffRef" />
+
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -403,10 +405,25 @@ export default {
     },
     async getPersonalDetail() { // 下方个人信息获取
       const { data } = await getPersonalDetailApi(this.userId)
+      this.$refs.secondStaffRef.fileList = [
+        { url: data.staffPhoto }
+      ]
       //   console.log(res)
       this.formData = data
     },
     async savePersonal() { // 下方个人信息更新
+      const secondStaffRef = this.$refs.secondStaffRef
+      if (secondStaffRef.fileList && secondStaffRef.fileList.length > 0) {
+        const imgUrl = secondStaffRef.fileList[0].url
+        this.formData.staffPhoto = imgUrl
+      } else {
+        this.$message.error('头像必须上传!')
+        return
+      }
+      if (!secondStaffRef.isStarfPhoto) {
+        this.$message.error('图片正在上传,请勿提交!')
+        return
+      }
       await updatePersonalApi(this.formData)
       //   console.log(res)
       this.$message.success('下方信息更新成功!')

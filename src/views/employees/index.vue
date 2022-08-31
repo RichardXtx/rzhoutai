@@ -18,6 +18,14 @@
       <el-card v-loading="isLoading" style="margin-top: 10px">
         <el-table border :data="list">
           <el-table-column label="序号" type="index" :index="indexMethod" />
+          <el-table-column label="头像" prop="staffPhoto">
+            <template #default="{row}">
+              <img v-imerror="sui" :src="row.staffPhoto||defaultImg" alt="" class="avator">
+
+            </template>
+
+          </el-table-column>
+
           <el-table-column label="姓名" prop="username" />
           <el-table-column label="手机号" prop="mobile" />
           <el-table-column label="工号" prop="workNumber" />
@@ -62,6 +70,7 @@
 </template>
 
 <script>
+import sui from '@/assets/common/bigUserHeader.png'
 import { getUserROleListApi, delEmployeesApi } from '@/api/employees'
 import empyess from '@/constant/employees'
 
@@ -85,7 +94,9 @@ export default {
 
       hireType: empyess.hireType,
 
-      showDialog: false // 弹框默认关闭
+      showDialog: false, // 弹框默认关闭
+      defaultImg: 'https://img2.baidu.com/it/u=2203692359,101708973&fm=253&fmt=auto&app=138&f=PNG?w=401&h=401',
+      sui
     }
   },
   created() {
@@ -194,5 +205,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.avator{
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+}
 </style>
