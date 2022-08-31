@@ -28,7 +28,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import cos from '@/utils/cos'
+
 export default {
+//   SecretId: AKIDDBtMYU9YgX6PRBernSqxoOhjV0ECtKUP
+
+  // SecretKey: h8JkuoRousfDVXKr89wTkmY4KK4ZonY4
   name: 'Dashboard',
   props: {
     limit: {
@@ -41,10 +46,8 @@ export default {
       fileList: [
         {
           url: 'https://www.bing.com/th/id/OGC.cfa9aad90c9c26339be49f6da22d6c44?pid=1.7&rurl=https%3a%2f%2fpic1.zhimg.com%2f50%2fv2-cfa9aad90c9c26339be49f6da22d6c44_hd.gif%3fsource%3d1940ef5c&ehk=0beLbuk347uk4nz0FxnUi14WTzgGPuxQxewn4iPWTNE%3d'
-        },
-        {
-          url: 'https://www.bing.com/th/id/OGC.e4846a5d421a2f83e4ed34fb7a177fcf?pid=1.7&rurl=https%3a%2f%2fbbsfiles.vivo.com.cn%2fvivobbs%2fattachment%2fforum%2f201304%2f04%2f150624khhset6qk89qlqkh.gif&ehk=v8Y1Rn92AeExlVi0y8TkqRTzavhcChLhwil3xTaWtTk%3d'
         }
+
       ],
 
       showDialog: false, // 控制显示弹层
@@ -76,24 +79,39 @@ export default {
       // console.log(file)
       // console.log(fileList)
     },
-    handleRequest(obj) { // 自定义上传
+    handleRequest({ file }) { // 自定义上传
       // console.dir(obj)
+      cos.putObject({
+        Bucket: 'yu-1309914777', /* 存储桶 */
+        Region: 'ap-beijing', /* 存储桶所在地域，必须字段 */
+        Key: +new Date() + file.name, /* 文件名 */
+        StorageClass: 'STANDARD', // 上传模式, 标准模式
+        Body: file, // 上传文件对象
+        // 上传进度
+        onProgress: (progressData) => {
+          console.log(JSON.stringify(progressData))
+        }
+      }, (err, data) => {
+        console.log(err || data)
+      })
     },
     handleChange(file, fileList) { // 上传图片改变
       this.fileList = [...fileList]
       // console.log(fileList)
     },
-    handleBeforeUpload(file) {
+    handleBeforeUpload(file) { // 上传图片校验
       const imgType = ['image/jpeg', 'image/gif', 'image/bmp', 'image/png', 'image/jpg']
       if (!imgType.includes(file.type)) {
         this.$message.error('图片格式不正确!')
         return false
       }
 
+      // B -> KB -> MB
       if (file.size / 1024 / 1024 > 2) {
         this.$message.error('图片大小不能超过2M')
         return false
       }
+      return true
     }
   }
 }
