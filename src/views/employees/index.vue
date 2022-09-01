@@ -46,7 +46,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="edit(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="delEmployees(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -70,6 +70,7 @@
           <canvas ref="myCanvas" />
         </el-row>
       </el-dialog>
+      <AssignRole :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
     </div>
   </div>
 </template>
@@ -78,6 +79,7 @@
 import sui from '@/assets/common/bigUserHeader.png'
 import { getUserROleListApi, delEmployeesApi } from '@/api/employees'
 import empyess from '@/constant/employees'
+import AssignRole from './components/assign-role'
 
 import addEmpolyee from './components/add-employee.vue'
 
@@ -89,7 +91,8 @@ import QrCode from 'qrcode' // 引入二维码组件
 
 export default {
   components: { // 注册组件
-    addEmpolyee
+    addEmpolyee,
+    AssignRole
   },
   data() { // 初始化数据
     return {
@@ -104,7 +107,9 @@ export default {
       showDialog: false, // 弹框默认关闭
       defaultImg: 'https://img2.baidu.com/it/u=2203692359,101708973&fm=253&fmt=auto&app=138&f=PNG?w=401&h=401',
       sui,
-      showCodeDialog: false // 二维码碳层
+      showCodeDialog: false, // 二维码碳层
+      showRoleDialog: false,
+      userId: ''
     }
   },
   created() {
@@ -215,6 +220,10 @@ export default {
     },
     closeCodeDialog() { // 关闭二维码弹框
       this.showCodeDialog = false
+    },
+    edit(id) {
+      this.showRoleDialog = true
+      this.userId = id
     }
   }
 }

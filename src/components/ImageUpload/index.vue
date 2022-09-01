@@ -92,7 +92,7 @@ export default {
         Body: file, // 上传文件对象
         // 上传进度
         onProgress: (progressData) => {
-          console.log(JSON.stringify(progressData))
+          // console.log(JSON.stringify(progressData))
           fileObj.percentage = progressData.percent * 100
         }
       }, (err, data) => {
