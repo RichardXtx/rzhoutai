@@ -7,7 +7,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="addShowDialog(1,'0')"
+            @click="addShowDialog(1, '0')"
           >添加权限</el-button>
         </div>
         <el-table border :data="permissionList" default-expand-all row-key="id">
@@ -15,10 +15,19 @@
           <el-table-column label="标识" prop="code" />
           <el-table-column label="描述" prop="description" />
           <el-table-column label="操作">
-            <template #default="{row}">
-              <el-button v-if="row.type===1" size="small" type="text" @click="addShowDialog(2,row.id)">添加权限点</el-button>
-              <el-button size="small" type="text">查看</el-button>
-              <el-button size="small" type="text">删除</el-button>
+            <template #default="{ row }">
+              <el-button
+                v-if="row.type === 1"
+                size="small"
+                type="text"
+                @click="addShowDialog(2, row.id)"
+              >添加权限点</el-button>
+              <el-button size="small" type="text" @click="editPermission(row.id)">查看</el-button>
+              <el-button
+                size="small"
+                type="text"
+                @click="delPermission(row.id)"
+              >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -28,7 +37,7 @@
       <!-- 新增编辑的弹层 -->
       <el-dialog
         :visible="showDialog"
-        title="弹层标题"
+        :title="Title"
         :close-on-click-modal="false"
         @close="closeDialog"
       >
@@ -50,8 +59,11 @@
               inactive-color="#ff4949"
               active-value="1"
               inactive-value="0"
+              active-text="启用"
+              inactive-text="不启用"
             >
-              /> </el-switch></el-form-item>
+              />
+            </el-switch></el-form-item>
         </el-form>
 
         <template #footer>
@@ -66,7 +78,13 @@
 </template>
 
 <script>
-import { getPermissionListApi, addPermissionApi } from '@/api/permission'
+import {
+  getPermissionListApi,
+  addPermissionApi,
+  delPermissionApi,
+  getPermissionDetailApi,
+  updatePermissionApi
+} from '@/api/permission'
 
 import { transFromTreeList } from '@/utils'
 export default {
@@ -82,25 +100,30 @@ export default {
         description: '', // 描述
         type: '', // 类型标记了一级(页面访问权) 二级(按钮操作权)
         pid: '' // 添加到哪个节点下
-      }
+      },
+      Title: ''
     }
   },
   created() {
     this.getPermissionList()
   },
   methods: {
-    async getPermissionList() { // 请求列表
+    async getPermissionList() {
+      // 请求列表
       const { data } = await getPermissionListApi()
       // console.log(res)
       this.permissionList = transFromTreeList(data, '0')
       // console.log(data)
     },
-    addShowDialog(type, pid) { // 添加弹框
+    addShowDialog(type, pid) {
+      // 添加弹框
       this.showDialog = true
       this.formData.type = type
       this.formData.pid = pid
+      this.Title = '添加'
     },
-    closeDialog() { // 关闭弹框
+    closeDialog() {
+      // 关闭弹框
       this.showDialog = false
       this.formData = {
         enVisible: '0', // 启用禁用, 0禁用, 1启用
@@ -112,11 +135,35 @@ export default {
       }
     },
     async addPermission() {
-      await addPermissionApi(this.formData)
-      // console.log(res)
-      this.$message.success('添加权限成功!')
+      if (this.formData.id) {
+        await updatePermissionApi(this.formData)
+        this.$message.success('编辑权限成功!')
+      } else {
+        // 权限确定
+        await addPermissionApi(this.formData)
+        // console.log(res)
+        this.$message.success('添加权限成功!')
+      }
+
       this.getPermissionList()
       this.closeDialog()
+    },
+    delPermission(id) { // 删除
+      this.$confirm('确定要删除吗?', '提示')
+        .then(async _ => {
+          await delPermissionApi(id)
+          // console.log(res)
+          this.$message.success('删除成功!')
+          this.getPermissionList()
+        })
+        .catch((_) => {})
+    },
+    async editPermission(id) {
+      this.showDialog = true
+      const { data } = await getPermissionDetailApi(id)
+      // console.log(res)
+      this.formData = data
+      this.Title = '编辑'
     }
   }
 }
