@@ -19,7 +19,7 @@
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
                 <template #default="{row}">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="success" @click="fpAssign(row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" @click="showEditDialog(row.id)">编辑</el-button>
                   <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
                 </template>
@@ -83,6 +83,24 @@
           <el-button @click="closeDialog">取消</el-button>
           <el-button type="primary" @click="submit">确认</el-button>
         </template></el-dialog>
+
+      <!-- 编辑弹框 -->
+      <!-- 分配权限的弹层 -->
+      <el-dialog title="分配权限" :close-on-click-modal="false" :visible="showAssignDialog" @open="openAssignDialog" @close="closeAssignDialog">
+        <el-tree
+          :data="assignList"
+          show-checkbox
+          :props="{label:'name'}"
+          default-expand-all
+          :check-strictly="true"
+        />
+        <template #footer>
+          <div style="text-align: right;">
+            <el-button @click="closeAssignDialog">取消</el-button>
+            <el-button type="primary">确定</el-button>
+          </div>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -90,6 +108,8 @@
 import { getAllroleListApi, delRoleListApi, addRoleListApi, getRoleApi, editRoleApi } from '@/api/role'
 import { getCompanyApi } from '@/api/company'
 import { mapState } from 'vuex'
+import { getPermissionListApi } from '@/api/permission'
+import { transFromTreeList } from '@/utils'
 
 export default {
   data() {
@@ -118,7 +138,9 @@ export default {
         name: [
           { required: true, message: '请输入角色名称', trigger: ['blur', 'change'] }
         ]
-      }
+      },
+      showAssignDialog: false, // 分配权限显示弹框
+      assignList: []
     }
   },
   computed: {
@@ -223,6 +245,21 @@ export default {
       const { data } = await getCompanyApi(this.userInfo.companyId)
       // console.log(res)
       this.companyForm = data
+    },
+    fpAssign() { // 分配权限
+      this.showAssignDialog = true
+    },
+    closeAssignDialog() { // 关闭分配权限弹框
+      this.showAssignDialog = false
+    },
+    async getPermissionList() {
+      const { data } = await getPermissionListApi()
+      // console.log(res)
+      this.assignList = transFromTreeList(data, '0')
+      // console.log(this.assignList)
+    },
+    openAssignDialog() {
+      this.getPermissionList()
     }
   }
 }
