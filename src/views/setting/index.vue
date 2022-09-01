@@ -140,7 +140,8 @@ export default {
         ]
       },
       showAssignDialog: false, // 分配权限显示弹框
-      assignList: []
+      assignList: [],
+      assignId: ''
     }
   },
   computed: {
@@ -246,8 +247,9 @@ export default {
       // console.log(res)
       this.companyForm = data
     },
-    fpAssign() { // 分配权限
+    fpAssign(id) { // 分配权限
       this.showAssignDialog = true
+      this.assignId = id
     },
     closeAssignDialog() { // 关闭分配权限弹框
       this.showAssignDialog = false
