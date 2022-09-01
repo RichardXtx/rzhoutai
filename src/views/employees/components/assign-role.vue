@@ -69,6 +69,7 @@ export default {
       })
       // console.log(res)
       this.$message.success('分配角色成功!')
+      this.closeRoleDialog()
     }
 
   }
