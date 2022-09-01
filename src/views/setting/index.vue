@@ -88,16 +88,18 @@
       <!-- 分配权限的弹层 -->
       <el-dialog title="分配权限" :close-on-click-modal="false" :visible="showAssignDialog" @open="openAssignDialog" @close="closeAssignDialog">
         <el-tree
+          ref="tree"
           :data="assignList"
           show-checkbox
           :props="{label:'name'}"
           default-expand-all
           :check-strictly="true"
+          node-key="id"
         />
         <template #footer>
           <div style="text-align: right;">
             <el-button @click="closeAssignDialog">取消</el-button>
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="fqRole">确定</el-button>
           </div>
         </template>
       </el-dialog>
@@ -105,7 +107,7 @@
   </div>
 </template>
 <script>
-import { getAllroleListApi, delRoleListApi, addRoleListApi, getRoleApi, editRoleApi } from '@/api/role'
+import { getAllroleListApi, delRoleListApi, addRoleListApi, getRoleApi, editRoleApi, fqRoleApi } from '@/api/role'
 import { getCompanyApi } from '@/api/company'
 import { mapState } from 'vuex'
 import { getPermissionListApi } from '@/api/permission'
@@ -140,8 +142,9 @@ export default {
         ]
       },
       showAssignDialog: false, // 分配权限显示弹框
-      assignList: [],
-      assignId: ''
+      assignList: [], // 所有权限点表单列表
+      assignId: '', // 点击权限所带id
+      permIds: ''
     }
   },
   computed: {
@@ -253,6 +256,7 @@ export default {
     },
     closeAssignDialog() { // 关闭分配权限弹框
       this.showAssignDialog = false
+      this.$refs.tree.setCheckedKeys([])
     },
     async getPermissionList() {
       const { data } = await getPermissionListApi()
@@ -260,8 +264,19 @@ export default {
       this.assignList = transFromTreeList(data, '0')
       // console.log(this.assignList)
     },
-    openAssignDialog() {
+    async openAssignDialog() { // 打开弹框触发的事件
       this.getPermissionList()
+      const { data: { permIds }} = await getRoleApi(this.assignId)
+      // console.log(res)
+      this.permIds = permIds
+      this.$refs.tree.setCheckedKeys(this.permIds)
+    },
+    async fqRole() {
+      // console.log(this.$refs.tree.getCheckedKeys())
+      await fqRoleApi({ id: this.assignId, permIds: this.$refs.tree.getCheckedKeys() })
+      // console.log(res)
+      this.$message.success('更改权限成功!')
+      this.closeAssignDialog()
     }
   }
 }

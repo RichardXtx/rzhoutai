@@ -65,3 +65,16 @@ export const editRoleApi = data => {
   })
 }
 
+/**
+ * 根据角色分配权限
+ * @param {*} data
+ * @returns
+ */
+export function fqRoleApi(data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
+  })
+}
+
