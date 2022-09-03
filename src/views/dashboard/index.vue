@@ -84,7 +84,8 @@
           <div slot="header" class="header">
             <span>绩效指数</span>
           </div>
-        <!-- 放置雷达图 -->
+          <!-- 放置雷达图 -->
+          <radar />
         </el-card>
         <!-- 帮助连接 -->
         <el-card class="box-card">
@@ -123,9 +124,10 @@
 import { mapGetters, mapState } from 'vuex'
 import defaultImg from '@/assets/common/bigUserHeader.png'
 import workCalendar from './components/work-calendar.vue'
+import radar from './components/radar.vue'
 export default {
   name: 'Dashboard',
-  components: { workCalendar },
+  components: { workCalendar, radar },
   data() {
     return {
       defaultImg

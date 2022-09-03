@@ -54,6 +54,15 @@ export default {
       })
     }
   },
+  watch: {
+    currentDate(val) {
+    //   console.log(val)
+      const date = new Date(val)
+      console.log(date)
+      this.currentYear = date.getFullYear()
+      this.currentMonth = date.getMonth() + 1
+    }
+  },
   created() {
     this.currentYear = this.startDate.getFullYear() // 得到当前年份
     this.currentMonth = this.startDate.getMonth() + 1 // 当前月份
