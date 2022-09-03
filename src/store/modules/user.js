@@ -1,6 +1,6 @@
 import { loginApi, getUserInfoApi, userInfoApi } from '@/api/user'
 import { setToken, getToken, removeToken } from '@/utils/auth'
-
+import { resetRouter } from '@/router'
 const obj = {
   namespaced: true,
   state() {
@@ -69,9 +69,11 @@ const obj = {
       commit('setUserInfo', baseData)
       return baseData
     },
-    logout({ commit }) {
-      commit('clearToken')
-      commit('clearUserInfo')
+    logout({ commit }) { // 退出
+      commit('clearToken') // 清除用户 token
+      commit('clearUserInfo') // 清除 用户信息
+      resetRouter() // 重置路由表单
+      commit('permission/setRoutes', [], { root: true }) // 清除vuex 中的路由表
     }
 
   },

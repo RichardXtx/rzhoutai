@@ -8,7 +8,10 @@ const mutations = {
   setRoutes(state, otherRoutes) {
     state.routes = [
       ...constantRoutes,
-      ...otherRoutes
+      ...otherRoutes,
+
+      // 可加可不加
+      { path: '*', redirect: '/404', hidden: true }
     ]
   }
 }
@@ -16,6 +19,7 @@ const mutations = {
 const actions = {
   async filterRoutes({ commit }, menus) {
     const otherRoutes = asyncRoutes.filter(item => menus.includes(item.children[0].name))
+    // console.log(o);
     commit('setRoutes', otherRoutes)
     return otherRoutes
   }

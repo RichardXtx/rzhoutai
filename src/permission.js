@@ -25,14 +25,14 @@ router.beforeEach((to, from, next) => {
           // 1 在这里可以拿到用户的权限
           // 2 拿到权限之后，可以动态新增路由
           // addRoutes 可以在 router 对象上新增路由
-          // 动态添加的路由 this.$router.options.routes 失取不到的
+          // 动态添加的路由 this.$router.options.routes 是取不到的
           // addRoutes 是异步的,不会阻碍后面代码的执行
 
           const { roles: { menus }} = res
 
           const otherRoutes = await store.dispatch('permission/filterRoutes', menus)
 
-          router.addRoutes(otherRoutes)
+          router.addRoutes([...otherRoutes, { path: '*', redirect: '/404', hidden: true }])
           // 为了让用户看到对应的导航， 让用户重新再进一次页面
           next({
             ...to,
