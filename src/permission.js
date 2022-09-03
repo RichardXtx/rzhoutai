@@ -2,6 +2,8 @@ import router from '@/router'
 
 import store from '@/store'
 
+import { asyncRoutes } from '@/router'
+
 // 引入进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -20,7 +22,17 @@ router.beforeEach((to, from, next) => {
       const res = Object.keys(store.state.user.userInfo)
       if (res.length <= 0) {
         store.dispatch('user/getUserInfo').then(_ => {
-          next()
+          // 1 在这里可以拿到用户的权限
+          // 2 拿到权限之后，可以动态新增路由
+          // addRoutes 可以在 router 对象上新增路由
+          // 动态添加的路由 this.$router.options.routes 失取不到的
+          // addRoutes 是异步的,不会阻碍后面代码的执行
+          router.addRoutes(asyncRoutes)
+          // 为了让用户看到对应的导航， 让用户重新再进一次页面
+          next({
+            ...to,
+            replace: true
+          })
         })
       } else {
         next()

@@ -87,16 +87,16 @@ export const constantRoutes = [
         component: () => import('@/views/import')
       }
     ]
-  },
+  }
 
   // 输入的地址除了以上地址,都显示 404 页面
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes] // 临时合并动态路由和静态路由
+  routes: [...constantRoutes] // 临时合并动态路由和静态路由
 })
 
 const router = createRouter()

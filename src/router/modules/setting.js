@@ -6,7 +6,7 @@ export default { // 公司设置
   children: [
     {
       path: '',
-      name: 'setting',
+      name: 'settings',
       component: _ => import('@/views/setting/index'),
       meta: { title: '公司设置', icon: 'setting' }
     }
