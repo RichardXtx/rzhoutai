@@ -9,7 +9,7 @@ import customEN from './en' // 引入自定义英文包
 Vue.use(VueI18n) // 全局注册国际化包
 
 export default new VueI18n({
-  locale: Cookies.get('language') || 'en', // 从cookie中获取语言类型 获取不到就是中文
+  locale: Cookies.get('language') || 'zh', // 从cookie中获取语言类型 获取不到就是中文
   messages: {
     en: {
       ...elementEN, // 将饿了么的英文语言包引入
