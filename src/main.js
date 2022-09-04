@@ -36,6 +36,11 @@ Vue.use(ElementUI)
 
 import Print from 'vue-print-nb'
 Vue.use(Print)
+import i18n from '@/lang'
+// 配置ElementUI的中英切换逻辑
+Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key, value)
+})
 
 Vue.config.productionTip = false
 Vue.prototype.$request = request
@@ -58,5 +63,6 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })
