@@ -27,7 +27,7 @@ export default {
       if (ScreenFull.isEnabled) {
         // 支持
         ScreenFull.toggle()
-        this.isFullScreen = !this.isFullScreen
+        this.fullscreen = !this.fullscreen
       } else {
         // 不支持
         this.$message.error('兄弟, 您的浏览器版本过低, 不支持全屏功能哦!')
